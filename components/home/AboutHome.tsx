@@ -27,11 +27,9 @@ const AboutHome = () => {
                       {/* Card 1 */}
                       <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-[#00737a] to-[#00737a] p-8 shadow-lg">
                         <h3 className="mb-3 text-xl leading-tight font-semibold text-white">Our vision</h3>
-
                         <p className="mb-6 leading-relaxed text-gray-50">
                           To make high-quality FMCG products and retail essentials accessible to every Indian...
                         </p>
-
                         <a
                           href="#"
                           className="inline-flex items-center gap-2 font-medium text-cyan-300 transition-all hover:gap-3"

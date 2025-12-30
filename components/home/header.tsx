@@ -5,53 +5,60 @@ import { Menu, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
+const navItems = [
+  { name: 'Home', href: '/' },
+  { name: 'About', href: '/about' },
+  // { name: 'Our Business', href: '/our-business' },
+  { name: 'Careers', href: '/careers' },
+  { name: 'Blog', href: '/blog' },
+  { name: 'Contact', href: '/contact' },
+];
+
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
   useEffect(() => {
-    const handleScroll = () => {
-      const isScrolled = window.scrollY > 10;
-      if (isScrolled !== scrolled) {
-        setScrolled(isScrolled);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [scrolled]);
+    const handleScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <header
       className={`fixed top-0 z-50 w-full ${
-        scrolled ? 'shadow-custom border-b border-white/10 bg-white' : 'bg-transparent'
+        scrolled ? 'bg-white shadow-custom border-b border-white/10' : 'bg-transparent'
       }`}
     >
-      <div className="container mx-auto flex h-18 items-center justify-between px-4 lg:px-22">
+      <div className="container mx-auto flex h-14 lg:h-18 items-center justify-between px-4 lg:px-22">
+        
         {/* Logo */}
         <Link href="/" className="flex items-center">
-          <Image src="/img/logo.png" alt="Logo" width={100} height={40} className="h-auto w-48" />
+          <Image
+            src="/img/logo.png"
+            alt="Logo"
+            width={100}
+            height={40}
+            className="h-auto w-36 lg:w-48"
+          />
         </Link>
 
         {/* Desktop Menu */}
-        <nav className="text-md hidden items-center gap-8 md:flex">
-          {['Home', 'About', 'Our Business', 'Careers', 'Blog', 'Contact'].map((item) => (
-            <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
-              className="text-md text-black transition-colors hover:text-[#05cec5]"
+        <nav className="hidden md:flex items-center gap-8 text-md">
+          {navItems.map((item) => (
+            <Link
+              key={item.name}
+              href={item.href}
+              className="text-black transition-colors hover:text-[#05cec5]"
             >
-              {item}
-            </a>
+              {item.name}
+            </Link>
           ))}
         </nav>
 
         {/* Mobile Menu Button */}
         <button
-          className="text-slate-200 md:hidden"
+          className="md:hidden text-black"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle Menu"
         >
@@ -61,17 +68,17 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="border-t border-white/10 bg-slate-950 md:hidden">
+        <div className="md:hidden bg-slate-950 border-t border-white/10"> 
           <nav className="flex flex-col space-y-4 px-6 py-6">
-            {['Home', 'About', 'Our Business', 'Careers', 'Blog', 'Contact'].map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-slate-300 transition hover:text-white"
+                className="text-slate-300 hover:text-white"
               >
-                {item}
-              </a>
+                {item.name}
+              </Link>
             ))}
           </nav>
         </div>
