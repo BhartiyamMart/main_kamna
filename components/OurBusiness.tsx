@@ -6,32 +6,32 @@ const businesses = [
     title: 'Kamna Techno',
     description:
       'A next-generation IT and digital solutions company delivering software development, digital marketing, automation, cybersecurity, and AI-driven growth solutions.',
-    image: '/img/a1.jpeg',
+    image: '/img/a6.jpg',
     link: '/our-business/kamna-techno',
   },
   {
     title: 'Kamna Mart',
     description:
       'A fast-growing FMCG retail and B2B supply enterprise focused on accessibility, affordability, and convenience.',
-    image: '/img/a2.jpg',
+    image: '/img/mart_04.jpg',
     link: '/our-business/kamna-mart',
   },
   {
     title: 'Kamna Café',
     description: 'A hospitality brand offering premium food, beverages, and warm community-focused spaces.',
-    image: '/img/a3.jpg',
+    image: '/img/a1.jpeg',
     link: '/our-business/kamna-café',
   },
   {
     title: 'Kamna Herbs',
     description: 'A wellness brand delivering herbal and natural personal care products rooted in traditional wisdom.',
-    image: '/img/a4.jpg',
+    image: '/img/a2.jpg',
     link: '/our-business/kamna-herbs',
   },
   {
     title: 'Kamna Digital',
     description: 'A one-stop destination for electronics, gadgets, laptops, appliances, and smart devices.',
-    image: '/img/a4.jpg',
+    image: '/img/a3.jpg',
     link: '/our-business/kamna-digital',
   },
 ];
