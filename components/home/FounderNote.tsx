@@ -7,16 +7,16 @@ export function FounderNote() {
       {/* Decorative teal background accent */}
       <div className="absolute top-0 right-0 w-1/3 h-full bg-[#006666]/5 -skew-x-12 translate-x-1/2 -z-10" />
 
-      <div className="max-w-7xl mx-auto">
+      <div className="container mx-auto">
         <div className="grid md:grid-cols-5 gap-12 items-center">
           {/* Founder Image */}
           <div className="md:col-span-2 relative">
-            <div className="relative aspect-[4/5] rounded-[2.5rem] overflow-hidden shadow-xl">
-              {/* <Image width={1000} height={1000} src="/img_founder.jpg" alt="Founder of Kamna Group" fill className="object-cover" /> */}
+            <div className="relative aspect-[4/5] rounded-md overflow-hidden shadow-xl mt-20">
+              <Image className="rounded-md object-cover" src="/img/manish_sinha.webp" alt="About Kamna Group" width={1000} height={1000} />
               <div className="absolute inset-0 bg-gradient-to-t from-[#004d4d]/40 to-transparent" />
             </div>
             {/* Quote Icon Badge */}
-            <div className="absolute -bottom-6 -right-6 w-20 h-20 bg-[#00B4D8] rounded-2xl flex items-center justify-center shadow-xl">
+            <div className="absolute -bottom-6 -right-6 w-20 h-20 bg-[#00B4D8] rounded-md flex items-center justify-center shadow-xl">
               <Quote className="text-white w-10 h-10" />
             </div>
           </div>

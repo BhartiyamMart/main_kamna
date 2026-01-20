@@ -24,8 +24,8 @@ const BLOG_POSTS = [
 
 export function BlogSection() {
   return (
-    <section className="py-24 bg-white">
-      <div className="container mx-auto px-4 md:px-26">
+    <section className="py-20 bg-white">
+      <div className="container mx-auto px-4 md:px-20">
         <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
           <div className="max-w-2xl">
             <h2 className="text-xl md:text-4xl font-bold tracking-tight text-slate-900 mb-4">Latest from our blog</h2>
@@ -41,7 +41,7 @@ export function BlogSection() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {BLOG_POSTS.map((post, index) => (
             <div key={index} className="group cursor-pointer">
-              <div className="relative aspect-[16/10] mb-6 overflow-hidden rounded-2xl bg-slate-100">
+              <div className="relative aspect-[16/10] mb-6 overflow-hidden rounded-md bg-slate-100">
                 <Image
                   src={post.image || "/placeholder.svg"}
                   alt={post.title}

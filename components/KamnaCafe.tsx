@@ -1,89 +1,72 @@
-
 import Header from './home/header';
 import Footer from './home/footer';
+import { Award, ChefHat, Coffee } from 'lucide-react';
+import Image from 'next/image';
+import { ContactSection } from './home/ContactSection';
 
 const KamnaCafe = () => {
   return (
     <>
       <Header />
-      <section className="container mx-auto mt-18 flex h-90 flex-col items-center justify-center bg-[url('/img/banner_bg.jpg')] bg-cover bg-center px-4 lg:px-22">
-        <p className="mb-2 text-sm text-gray-900">HOME / OUR BUSINESS</p>
-        <h1 className="text-4xl font-bold text-black">Kamna Cafe</h1>
+      <section className="container mx-auto mt-18 flex h-[70vh] flex-col items-center justify-center bg-[url('/img/kamna_cafe02.jpg')] bg-cover bg-center px-4 lg:px-22">
+        <img src="/img/coffe_img.gif" alt="Kamna Cafe Logo" className="mb-6 h-auto w-40 lg:w-44" />
+        <p className="text-md mb-2 text-emerald-800">HOME / OUR BUSINESS</p>
+        <h1 className="text-xl font-bold text-emerald-800 lg:text-5xl">Kamna Cafe</h1>
       </section>
 
-      <section className="container mx-auto px-6 py-16">
-        <div className="grid items-center gap-10 md:grid-cols-12">
-          <div className="col-span-12 md:col-span-4">
-            <img src="/img/modern-office-innovation.jpg" alt="About Kamna Group" className="rounded-xl shadow-lg" />
-          </div>
+      <div className="px-4 py-8 sm:py-16 md:py-20 lg:px-20">
+        <div className="container mx-auto">
+          <div className="items-top grid gap-8 lg:grid-cols-12 lg:gap-12">
+            {/* Left Content */}
+            <div className="col-span-12 lg:col-span-7">
+              <h1 className="mb-4 text-xl font-bold text-gray-900 sm:mb-6 sm:text-4xl md:text-4xl">
+                Kamna Café – Brewing Aroma with Togetherness
+              </h1>
+              <div className="space-y-4 text-base leading-relaxed text-gray-700 sm:text-base">
+                <p>
+                  Kamna Café, part of the Kamna Group of Companies, is a vibrant culinary brand delivering memorable
+                  food experiences through its café and restaurant model. Built on the belief that food connects people
+                  and creates moments, it blends warm hospitality, premium ingredients, and innovative flavours.
+                </p>
+                <p>
+                  {' '}
+                  The café offers curated menus for breakfast, coffee breaks, family meals, and gatherings, supported by
+                  strong hygiene and service standards.
+                </p>
 
-          <div className="col-span-12 md:col-span-8">
-            <h2 className="mb-4 text-3xl font-semibold">Who We Are</h2>
-            <p className="mb-4 leading-relaxed text-gray-600">
-              Kamna Group of Companies is a diversified organization committed to delivering excellence across multiple
-              industries including digital solutions, food & beverages, retail, and wellness.
-            </p>
-            <p className="leading-relaxed text-gray-600">
-              Our focus is on innovation, customer satisfaction, and sustainable growth driven by strong values and a
-              visionary leadership team.
-            </p>
+                <div className="mt-8 flex flex-wrap gap-4">
+                  <a
+                    target="-blank"
+                    href="#"
+                    className="rounded-xl bg-[#3ea8b6] px-6 py-3 font-medium text-white transition hover:bg-[#3194a1]"
+                  >
+                    Shop Online
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Visual */}
+            <div className="relative col-span-12 lg:col-span-5">
+              <div>
+                <Image
+                  src="/img/about02.png"
+                  alt="Food"
+                  width={600}
+                  height={500}
+                  className="h-96 w-full object-cover"
+                />
+              </div>
+
+              {/* Floating badge */}
+            </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* Mission / Vision */}
-      <section className="bg-gray-50 py-16">
-        <div className="container mx-auto grid gap-8 px-6 md:grid-cols-2">
-          <div className="rounded-lg bg-white p-8 shadow">
-            <h3 className="mb-3 text-xl font-semibold">Our Mission</h3>
-            <p className="text-gray-600">
-              To deliver quality-driven solutions that create long-term value for our customers, partners, and
-              communities.
-            </p>
-          </div>
-
-          <div className="rounded-lg bg-white p-8 shadow">
-            <h3 className="mb-3 text-xl font-semibold">Our Vision</h3>
-            <p className="text-gray-600">
-              To become a trusted multi-industry brand recognized for innovation, integrity, and impact.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Stats */}
-      <section className="bg-white py-16">
-        <div className="container mx-auto grid grid-cols-2 gap-6 text-center md:grid-cols-4">
-          <div>
-            <h3 className="text-primary text-4xl font-bold">10+</h3>
-            <p className="text-gray-600">Years Experience</p>
-          </div>
-          <div>
-            <h3 className="text-primary text-4xl font-bold">5+</h3>
-            <p className="text-gray-600">Business Verticals</p>
-          </div>
-          <div>
-            <h3 className="text-primary text-4xl font-bold">100+</h3>
-            <p className="text-gray-600">Team Members</p>
-          </div>
-          <div>
-            <h3 className="text-primary text-4xl font-bold">1000+</h3>
-            <p className="text-gray-600">Happy Clients</p>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="bg-black py-16 text-center text-white">
-        <h2 className="mb-4 text-3xl font-semibold">Let’s Build the Future Together</h2>
-        <p className="mb-6 text-gray-300">Connect with us to explore partnerships and opportunities.</p>
-        <a
-          href="/contact"
-          className="inline-block rounded-md bg-white px-8 py-3 font-medium text-black transition hover:bg-gray-200"
-        >
-          Contact Us
-        </a>
-      </section>
+      <div className="bg-gray-50">
+        <ContactSection />
+      </div>
 
       <Footer />
     </>

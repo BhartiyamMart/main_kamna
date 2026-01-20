@@ -5,8 +5,8 @@ import { MapPin, Mail, Phone, Clock } from "lucide-react"
 
 export function ContactSection() {
   return (
-    <section id="contact" className="py-18 px-6 bg-slate-50">
-      <div className="max-w-7xl mx-auto">
+    <section id="contact" className=" py-18 px-4 lg:px-20">
+      <div className="container mx-auto">
         <div className="grid lg:grid-cols-2 gap-16">
           {/* Left Side: Contact Information */}
           <div className="space-y-8">
@@ -26,9 +26,9 @@ export function ContactSection() {
                 <div>
                   <h4 className="font-bold text-slate-900">Our Location</h4>
                   <p className="text-sm text-slate-600">
-                    123 Business Avenue, Techno Park
+                     1st Floor, B 121 Block-B Sector 2, Noida
                     <br />
-                    Noida, UP 400001
+                     Uttar Pradesh – 201301, India
                   </p>
                 </div>
               </div>
@@ -40,9 +40,9 @@ export function ContactSection() {
                 <div>
                   <h4 className="font-bold text-slate-900">Email Us</h4>
                   <p className="text-sm text-slate-600">
-                    info@kamnagroup.com
+                    info@kamnagroup.org
                     <br />
-                    careers@kamnagroup.com
+                    careers@kamnagroup.org
                   </p>
                 </div>
               </div>
@@ -54,9 +54,8 @@ export function ContactSection() {
                 <div>
                   <h4 className="font-bold text-slate-900">Call Us</h4>
                   <p className="text-sm text-slate-600">
-                    +91 (22) 1234-5678
-                    <br />
-                    +91 (22) 8765-4321
+                    +91 9266413040
+                    
                   </p>
                 </div>
               </div>
@@ -81,7 +80,7 @@ export function ContactSection() {
           </div>
 
           {/* Right Side: Contact Form */}
-          <div className="bg-white p-8 md:p-12 rounded-[2.5rem] shadow-xl shadow-slate-200/60 border border-slate-100">
+          <div className="bg-white p-8 md:p-12 rounded-md shadow-xl shadow-slate-200/60 border border-slate-100">
             <form className="space-y-6">
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
@@ -135,7 +134,7 @@ export function ContactSection() {
                 />
               </div>
 
-              <Button className="w-full bg-[#006666] hover:bg-[#004d4d] text-white py-6 text-lg rounded-xl transition-all hover:shadow-lg">
+              <Button className="w-full bg-[#006666] hover:bg-[#004d4d] text-white py-6 text-lg rounded-md transition-all hover:shadow-lg">
                 Send Message
               </Button>
             </form>

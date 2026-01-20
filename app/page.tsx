@@ -14,7 +14,10 @@ const page = () => {
       <MoreInfo />
       <AboutHome />
        <BlogSection />
-       <ContactSection/>
+       <div className="bg-gray-50">
+        <ContactSection/>
+       </div>
+       
       {/* <FeaturesSection /> */}
       <Footer />
     </>

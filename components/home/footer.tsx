@@ -3,102 +3,77 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-teal-800 bg-teal-900 text-slate-200">
-      <div className="container mx-auto px-4 py-16 lg:px-8">
-        <div className="flex flex-col md:flex-row md:justify-between md:gap-8 lg:gap-16">
-          {/* Brand section */}
-          <div className="max-w-[300px]">
-            <h3 className="mb-4 font-semibold text-white">About us</h3>
-            <p className="text-sm leading-6 text-slate-400">
-              Kamna Group of Companies is a forward-thinking and multi-diversified enterprise dedicated to transforming
-              daily experiences through innovation, convenience, and quality.
+    <footer className="border-t border-teal-800 bg-teal-900 text-slate-200 min-h-[420px]">
+      <div className="container mx-auto px-4 py-16 lg:px-20">
+
+        {/* Top Footer */}
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
+
+          {/* About (Wider Section) */}
+          <div className="lg:col-span-2">
+            <h3 className="mb-4 font-semibold text-white">About Us</h3>
+            <p className="text-md leading-6 text-slate-400">
+              Kamna Group is a diversified business group built to serve everyday needs while enabling future growth. 
+              The Group blends innovation, ethics, and execution to build reliable businesses. 
+              Kamna Mart serves communities with convenient, hyper-local retail solutions and daily essentials, 
+              while Kamna Café offers welcoming spaces for premium food and beverages. Kamna Techno and Kamna Digital 
+              deliver advanced IT solutions, digital transformation, branding, and growth-focused strategies for businesses of all sizes. 
+            
             </p>
           </div>
 
-          {/* Features */}
+          {/* Our Business */}
           <div>
             <h3 className="mb-4 font-semibold text-white">Our Business</h3>
             <ul className="space-y-3">
-              <li>
-                <a href="#" className="text-sm text-slate-400 transition-colors hover:text-white">
-                  Kamna Cafe
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-sm text-slate-400 transition-colors hover:text-white">
-                  Kamna Herbs
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-sm text-slate-400 transition-colors hover:text-white">
-                  Kamna Digital
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-sm text-slate-400 transition-colors hover:text-white">
-                  Kamna Mart
-                </a>
-              </li>
+              {[
+                'Kamna Techno',
+                'Kamna Mart',
+                'Kamna Cafe',
+                'Kamna Herbs',
+                'Kamna Digital',
+              ].map((item) => (
+                <li key={item}>
+                  <a
+                    href="#"
+                    className="text-sm text-slate-400 transition hover:text-white"
+                  >
+                    {item}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Resources */}
+          {/* Quick Links */}
           <div>
-            <h3 className="mb-4 font-semibold text-white">Resources</h3>
+            <h3 className="mb-4 font-semibold text-white">Quick Links</h3>
             <ul className="space-y-3">
-              <li>
-                <a href="#" className="text-sm text-slate-400 transition-colors hover:text-white">
-                  Terms & Conditions
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-sm text-slate-400 transition-colors hover:text-white">
-                  Privacy Policy
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-sm text-slate-400 transition-colors hover:text-white">
-                  Blog
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-sm text-slate-400 transition-colors hover:text-white">
-                  Support
-                </a>
-              </li>
+              {['About Us', 'Privacy Policy', 'Blog', 'Career'].map((item) => (
+                <li key={item}>
+                  <a
+                    href="#"
+                    className="text-sm text-slate-400 transition hover:text-white"
+                  >
+                    {item}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Platform */}
-          <div>
-            <h3 className="mb-4 font-semibold text-white">Platform</h3>
-            <ul className="space-y-3">
-              <li>
-                <a href="#" className="text-sm text-slate-400 transition-colors hover:text-white">
-                  About Us
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-sm text-slate-400 transition-colors hover:text-white">
-                  Contact
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-sm text-slate-400 transition-colors hover:text-white">
-                  Careers
-                </a>
-              </li>
-            </ul>
-          </div>
         </div>
 
-        {/* Newsletter section */}
-
-        {/* Bottom bar */}
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-teal-700 pt-8 text-center md:flex-row">
-          <p className="m-auto text-sm text-slate-400">© {currentYear} Kamna Group . All rights reserved.</p>
+        {/* Bottom Bar */}
+        <div className="mt-12 border-t border-teal-700 pt-6 text-center">
+          <p className="text-sm text-slate-400">
+            © {currentYear} Kamna Group of Companies. All rights reserved.
+          </p>
         </div>
+
       </div>
     </footer>
+
+
   );
 }
