@@ -9,7 +9,7 @@ const KamnaMart = () => {
   return (
     <>
       <Header />
-      <section className="container mx-auto mt-18 flex h-[70vh] flex-col items-center justify-center bg-[url('/img/kamna-mart.jpg')] bg-cover bg-center px-4 lg:px-22">
+      <section className="container mx-auto mt-18 flex h-[60vh] flex-col items-center justify-center bg-[url('/img/kamna-mart.jpg')] bg-cover bg-center px-4 lg:px-22">
         <img src="/img/store-mart.gif" alt="Kamna Cafe Logo" className="mb-6 h-auto w-40 lg:w-44" />
         <p className="mb-2 text-md text-white">HOME / OUR BUSINESS</p>
         <h1 className="text-2xl lg:text-5xl font-bold text-white">Kamna Mart </h1>
