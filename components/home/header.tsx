@@ -12,7 +12,7 @@ const navItems = [
   { name: 'Our Business', href: '/our-business' },
   { name: 'Work With Us', href: '/work-with-us' },
   { name: 'Careers', href: '/careers' },
-  { name: 'Blog', href: '/blog' },
+  { name: 'Blog', href: '/blog-kamna' },
   { name: 'Contact', href: '/contact-us' },
 ];
 
