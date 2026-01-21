@@ -9,7 +9,7 @@ export const MoreInfo = () => {
             {/* Card 1 */}
             <Link
               href="our-business/kamna-techno"
-              className="group relative flex h-28 items-center justify-center overflow-hidden bg-[#3ea8b6] sm:h-44"
+              className="group relative flex h-28 items-center justify-center overflow-hidden bg-[#21502c] sm:h-44"
             >
               <div className="absolute inset-0 bg-[url('/img/a6.jpg')] bg-cover bg-center opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
               <div className="absolute inset-0 bg-black/50 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
@@ -35,7 +35,7 @@ export const MoreInfo = () => {
             {/* Card 2 */}
             <Link
               href="our-business/kamna-cafe"
-              className="group relative flex h-28 items-center justify-center overflow-hidden bg-[#3ea8b6] sm:h-44"
+              className="group relative flex h-28 items-center justify-center overflow-hidden bg-[#21502c] sm:h-44"
             >
               <div className="absolute inset-0 bg-[url('/img/a1.jpeg')] bg-cover bg-center opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
               <div className="absolute inset-0 bg-black/50 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
@@ -59,7 +59,7 @@ export const MoreInfo = () => {
             {/* Card 2 */}
             <Link
               href="our-business/kamna-digital"
-              className="group relative flex h-28 items-center justify-center overflow-hidden bg-[#3ea8b6] sm:h-44"
+              className="group relative flex h-28 items-center justify-center overflow-hidden bg-[#21502c] sm:h-44"
             >
               <div className="absolute inset-0 bg-[url('/img/a3.jpg')] bg-cover bg-center opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
               <div className="absolute inset-0 bg-black/50 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />

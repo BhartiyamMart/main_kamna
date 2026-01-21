@@ -3,7 +3,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-teal-800 bg-teal-900 text-slate-200 min-h-[420px]">
+    <footer className="bg-[#21502c] text-slate-200 min-h-[420px]">
       <div className="container mx-auto px-4 py-16 lg:px-20">
 
         {/* Top Footer */}

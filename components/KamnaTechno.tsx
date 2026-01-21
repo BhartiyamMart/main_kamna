@@ -8,10 +8,10 @@ const KamnaTechno = () => {
   return (
     <>
       <Header />
-      <section className="container mx-auto mt-18 flex h-[60vh] flex-col items-center justify-center bg-[url('/img/kamna-digital.jpg')] bg-cover bg-center px-4 lg:px-22">
+      <section className="container mx-auto mt-18 flex h-[60vh] flex-col items-center justify-center bg-[url('/img/work_img.jpg')] bg-cover bg-center px-4 lg:px-22">
         <img src="/img/digital-im.gif" alt="Kamna Cafe Logo" className="mb-6 h-auto w-40 lg:w-44" />
-        <p className="text-md mb-2 text-emerald-700">HOME / OUR BUSINESS</p>
-        <h1 className="text-2xl font-bold text-emerald-700 lg:text-5xl">Kamna Techno</h1>
+        <p className="text-md mb-2 text-[#d9af00]">HOME / OUR BUSINESS</p>
+        <h1 className="text-2xl font-bold text-[#d9af00] lg:text-5xl">Kamna Techno</h1>
       </section>
 
       <div className="px-4 py-8 sm:py-16 md:py-20 lg:px-20">

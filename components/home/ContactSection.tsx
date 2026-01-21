@@ -134,7 +134,7 @@ export function ContactSection() {
                 />
               </div>
 
-              <Button className="w-full bg-[#006666] hover:bg-[#004d4d] text-white py-6 text-lg rounded-md transition-all hover:shadow-lg">
+              <Button className="w-full bg-[#21502c] hover:bg-[#3b864c] text-white py-6 text-lg rounded-md transition-all hover:shadow-lg">
                 Send Message
               </Button>
             </form>

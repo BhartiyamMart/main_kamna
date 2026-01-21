@@ -61,8 +61,8 @@ const OurBusiness = () => {
 
       <section className="container mx-auto mt-18 flex h-[60vh] flex-col items-center justify-center bg-[url('/img/work_img.jpg')] bg-cover bg-top px-4 lg:px-22">
         <img src="/img/career-img.gif" alt="Kamna Cafe Logo" className="mb-6 h-auto w-40 lg:w-44" />
-        <p className="mb-2 text-sm text-emerald-700">HOME / OUR BUSINESS</p>
-        <h1 className="text-4xl lg:text-5xl font-bold text-emerald-600">Our Businesses</h1>
+        <p className="mb-2 text-sm text-[#d9af00]">HOME / OUR BUSINESS</p>
+        <h1 className="text-4xl lg:text-5xl font-bold text-[#d9af00]">Our Businesses</h1>
       </section>
 
       <section className="container mx-auto flex items-center justify-center px-4 lg:px-20">

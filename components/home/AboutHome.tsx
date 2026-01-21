@@ -26,28 +26,28 @@ const AboutHome = () => {
                   <div className="mx-auto max-w-6xl px-4 lg:px-0">
                     <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
                       {/* Card 1 */}
-                      <div className="rounded-md border border-white/10 bg-gradient-to-br from-[#00737a] to-[#00737a] p-8 shadow-lg">
+                      <div className="rounded-md border border-white/10 bg-gradient-to-br from-[#21502c] to-[#357d46] p-8 shadow-lg">
                         <h3 className="mb-3 text-xl leading-tight font-semibold text-white">Our vision</h3>
                         <p className="mb-6 leading-relaxed text-gray-50">
                           To build a trusted, future-ready business group that enhances everyday life.
                         </p>
                         <a
                           href="/about"
-                          className="inline-flex items-center gap-2 font-medium text-cyan-300 transition-all hover:gap-3"
+                          className="inline-flex items-center gap-2 font-medium text-yellow-200 transition-all hover:gap-3"
                         >
                           Learn More <span>→</span>
                         </a>
                       </div>
 
                       {/* Card 2 */}
-                      <div className="rounded-md border border-white/10 bg-gradient-to-br from-[#00737a] to-[#00737a] p-8 shadow-lg">
+                      <div className="rounded-md border border-white/10 bg-gradient-to-br from-[#21502c] to-[#357d46] p-8 shadow-lg">
                         <h3 className="mb-3 text-xl leading-tight font-semibold text-white">Our mission</h3>
                         <p className="mb-6 leading-relaxed text-gray-50">
                           To deliver quality products and services through technology, creativity, and ethical practices.
                         </p>
                         <a
                           href="/about"
-                          className="inline-flex items-center gap-2 font-medium text-cyan-300 transition-all hover:gap-3"
+                          className="inline-flex items-center gap-2 font-medium text-yellow-200 transition-all hover:gap-3"
                         >
                           Learn More <span>→</span>
                         </a>
@@ -81,7 +81,7 @@ const AboutHome = () => {
               Why Kamna Group
             </h2>
 
-            <div className="mt-4 h-1 w-16 rounded bg-[#3ea8b6]" />
+            <div className="mt-4 h-1 w-16 rounded bg-[#21502c]" />
 
             <p className="mt-6 text-base  leading-7 text-gray-700">
               Kamna Group of Companies brings together innovation, trust, and everyday value through well-integrated verticals. 
@@ -101,7 +101,7 @@ const AboutHome = () => {
             <div className="mt-8 flex flex-wrap gap-4">
               <a
                 href="/about"
-                className="rounded-xl bg-[#3ea8b6] px-6 py-3 text-white font-medium transition hover:bg-[#3194a1]"
+                className="rounded-md bg-[#21502c] px-6 py-3 text-white font-medium transition hover:bg-[#327241]"
               >
                 Explore About Us
               </a>
@@ -143,13 +143,13 @@ const AboutHome = () => {
             <div className="mt-8 flex flex-wrap gap-4">
               <a
                 href="/careers"
-                className="rounded-xl bg-[#3ea8b6] px-6 py-3 text-white font-medium transition hover:bg-[#3194a1]"
+                className="rounded-md bg-[#21502c] px-6 py-3 text-white font-medium transition hover:bg-[#327241]"
               >
                 Explore Careers
               </a>
               <a
                 href="/work-with-us"
-                className="rounded-xl border border-[#3ea8b6] px-6 py-3 text-[#3ea8b6] font-medium transition hover:bg-[#3ea8b6] hover:text-white"
+                className="rounded-md border border-[#21502c] px-6 py-3 text-[#21502c] font-medium transition hover:bg-[#327241] hover:text-white"
               >
                 Partner With Us
               </a>
