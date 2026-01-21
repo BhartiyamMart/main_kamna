@@ -51,7 +51,7 @@ const KamnaTechno = () => {
             <div className="relative col-span-12 lg:col-span-5">
               <div className="aspect-square">
                 <Image
-                  src="/img/digi_img.jpg"
+                  src="/img/web-design.jpg"
                   alt="Food"
                   width={600}
                   height={500}
