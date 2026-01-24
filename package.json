@@ -10,9 +10,15 @@
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\""
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^7.3.0",
     "@prisma/client": "^7.3.0",
+    "@radix-ui/react-collapsible": "^1.1.12",
+    "@radix-ui/react-dialog": "^1.1.15",
+    "@radix-ui/react-separator": "^1.1.8",
     "@radix-ui/react-slot": "^1.2.4",
+    "@radix-ui/react-tooltip": "^1.2.8",
     "@tailwindcss/postcss": "^4.1.18",
+    "@tinymce/tinymce-react": "^6.3.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "embla-carousel-autoplay": "^8.6.0",
@@ -21,14 +27,18 @@
     "lucide-react": "^0.560.0",
     "motion": "^12.23.26",
     "next": "16.0.10",
+    "pg": "^8.17.2",
     "postcss": "^8.5.6",
     "prettier": "^3.7.4",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "prisma": "^7.3.0",
     "react": "19.2.1",
     "react-dom": "19.2.1",
+    "react-icons": "^5.5.0",
     "tailwind-merge": "^3.4.0",
-    "tailwindcss": "^4.1.18"
+    "tailwindcss": "^4.1.18",
+    "tinymce": "^8.3.2",
+    "zustand": "^5.0.10"
   },
   "devDependencies": {
     "@types/node": "^20",
