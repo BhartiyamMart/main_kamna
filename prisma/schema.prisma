@@ -1,0 +1,141 @@
+generator client {
+  provider = "prisma-client-js"
+  // output = "../components/generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/* =========================
+   USER & AUTH
+========================= */
+
+model User {
+  id        String   @id @default(uuid()) @db.Uuid()
+  email     String   @unique
+  password  String
+  role      UserRole @default(ADMIN)
+
+  tokens    Token[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Token {
+  id         String   @id @default(uuid()) @db.Uuid()
+  token      String   @unique
+  expiresAt  DateTime
+
+  userId     String   @db.Uuid()
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt  DateTime @default(now())
+
+  @@map("tokens")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+  MARKETING
+}
+
+/* =========================
+   CAREER / JOB APPLICATION
+========================= */
+
+model Career {
+  id            String   @id @default(uuid()) @db.Uuid()
+
+  // Candidate Info
+  firstName     String
+  lastName      String
+  email         String
+  phoneNumber   String
+
+  // Job Info
+  position      String
+  department    String?
+  jobType       JobType
+  location      String?
+
+  // Professional Info
+  experience    Int?
+  currentCTC    String?
+  expectedCTC   String?
+  noticePeriod  String?
+
+  // Application
+  resumeUrl     String
+  coverLetter   String? @db.Text
+  status        ApplicationStatus @default(APPLIED)
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("careers")
+}
+
+enum JobType {
+  FULL_TIME
+  PART_TIME
+  INTERNSHIP
+  CONTRACT
+  FREELANCE
+}
+
+enum ApplicationStatus {
+  APPLIED
+  SHORTLISTED
+  INTERVIEW_SCHEDULED
+  REJECTED
+  HIRED
+}
+
+/* =========================
+   CONTACT / ENQUIRY
+========================= */
+
+model Contact {
+  id          String   @id @default(uuid()) @db.Uuid()
+  firstName   String
+  lastName    String
+  email       String
+  phoneNumber String
+  subject     String
+  message     String @db.Text
+  isRead      Boolean  @default(false)
+
+  createdAt   DateTime @default(now())
+
+  @@map("contacts")
+}
+
+/* =========================
+   BLOG
+========================= */
+
+model Blog {
+  id          String    @id @default(uuid()) @db.Uuid()
+  title       String
+  excerpt     String
+  content     String    @db.Text
+  image       String?
+  category    String
+  author      String
+  readTime    Int
+
+  featured    Boolean   @default(false)
+  published   Boolean   @default(false)
+  publishedAt DateTime?
+  slug        String    @unique
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("blogs")
+}

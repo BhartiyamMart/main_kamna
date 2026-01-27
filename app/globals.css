@@ -2,6 +2,11 @@
 @import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
+.input {
+  @apply w-full h-11 rounded-md border border-gray-300 px-4 text-sm
+         focus:outline-none focus:ring-2 focus:ring-green-500;
+}
+
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -138,8 +143,4 @@
     @apply bg-background text-foreground;
   }
 }
-
-
-
-
 
