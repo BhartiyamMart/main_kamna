@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { SidebarTrigger, useSidebar } from '../ui/sidebar';
+import Image from 'next/image';
 
 
 const Navbar = () => {
@@ -10,11 +11,11 @@ const Navbar = () => {
   const showLogo = !open || isMobile;
   return (
     <nav
-      className={`h-14 border-b fixed  w-full z-50 flex items-center bg-green-950 px-3 ${showLogo ? 'justify-between' : 'justify-end'}`}
+      className={`h-14 border-b fixed  w-full z-50 flex bg-white items-center px-3 ${showLogo ? 'justify-between' : 'justify-end'}`}
     >
       {showLogo && (
         <div className="flex items-center">
-          {/* <LogoFull /> */}
+       
         </div>
       )}
       <div className="flex w-fit items-center gap-5">
