@@ -1,5 +1,5 @@
 'use server';
-import {prisma} from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 
 /* CREATE Contact */
 export async function createContact(data: {

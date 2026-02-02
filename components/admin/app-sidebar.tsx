@@ -19,8 +19,7 @@ import { useState, useCallback } from 'react';
 import { ChevronRight, LogOut } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { logoutUser } from '@/lib/actions/user-actions';
-import { checkAdminAuth , Logout, } from '@/lib/actions/cookies';
-
+import { checkAdminAuth, Logout } from '@/lib/actions/cookies';
 
 import Image from 'next/image';
 
@@ -90,12 +89,10 @@ export function AppSidebar() {
       const response = await checkAdminAuth();
       const role = response.role;
       const token = response.token;
-      await Logout()
-     
-     
+      await Logout();
+
       if (token) {
         await logoutUser(token);
-        
       }
 
       router.push('/login');
@@ -113,14 +110,9 @@ export function AppSidebar() {
 
   return (
     <Sidebar>
-      <header className=" flex h-14 items-center border-b ">
-        <Image
-        height={55}
-        width={55}
-        src="/Kamna_Mart.webp"
-        alt='logo'
-        
-      /></header>
+      <header className="flex h-14 items-center border-b">
+        <Image height={55} width={55} src="/Kamna_Mart.webp" alt="logo" />
+      </header>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
@@ -191,7 +183,7 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <footer className=" border-t p-2">
+      <footer className="border-t p-2">
         <button
           onClick={handleLogoutClick}
           className="hover:bg-border flex w-full cursor-pointer items-center gap-2 rounded-xs px-2 py-2 text-sm transition-colors"
@@ -208,7 +200,7 @@ export function AppSidebar() {
           <div className="absolute" onClick={handleLogoutCancel} />
 
           {/* Modal */}
-          <div className="bg-foreground relative w-full max-w-xl rounded-xs p-5 shadow-xl">
+          <div className="relative w-full max-w-xl rounded-xs bg-white p-5 shadow-xl">
             <h3 className="text-theme-text mb-2 text-lg font-semibold md:text-xl">Confirm Logout</h3>
             <p className="text-theme-text/80 mb-8 text-sm">Are you sure you want to logout of your account?</p>
             <div className="flex justify-end gap-5">
@@ -220,7 +212,7 @@ export function AppSidebar() {
               </button>
               <button
                 onClick={handleLogoutConfirm} // Use isLoggingOut from store
-                className="flex cursor-pointer items-center gap-2 rounded-xs bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 px-3 py-2 font-semibold text-white transition-all duration-200 hover:from-indigo-500/90 hover:via-purple-500/90 hover:to-pink-500/90 disabled:cursor-not-allowed disabled:opacity-50"
+                className="bg-border hover:bg-border/90 dark:text-theme-text cursor-pointer rounded-xs px-3 py-2 font-semibold text-gray-800 transition-all duration-200 disabled:opacity-50"
               >
                 {isLoggingOut && <LoadingSpinner />}
                 {isLoggingOut ? 'Logging out...' : 'Logout'}

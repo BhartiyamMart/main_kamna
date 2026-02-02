@@ -1,11 +1,11 @@
-import ContactUs from '@/components/ContactUs'
+import ContactUs from '@/components/ContactUs';
 
 const page = () => {
   return (
     <div>
-        <ContactUs />
+      <ContactUs />
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default page;

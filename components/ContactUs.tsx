@@ -21,10 +21,6 @@ const ContactUs = () => {
         </div>
       </section>
 
-      
-
-      
-
       <Footer />
     </>
   );

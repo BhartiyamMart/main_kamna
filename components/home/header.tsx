@@ -31,14 +31,10 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0  z-50 w-full transition-all duration-300
-        ${isHome && !scrolled ? 'bg-transparent' : 'bg-white shadow-custom'}
-      `}
+      className={`fixed top-0 z-50 w-full transition-all duration-300 ${isHome && !scrolled ? 'bg-transparent' : 'shadow-custom bg-white'} `}
     >
       <div
-        className={`container mx-auto flex items-center justify-between px-4 lg:px-14 transition-all duration-300
-          ${scrolled ? 'h-14 lg:h-16' : 'h-20 lg:h-24'}
-        `}
+        className={`container mx-auto flex items-center justify-between px-4 transition-all duration-300 lg:px-14 ${scrolled ? 'h-14 lg:h-16' : 'h-20 lg:h-24'} `}
       >
         {/* Logo */}
         <Link href="/" className="flex items-center">
@@ -47,38 +43,31 @@ export default function Header() {
             alt="Logo"
             width={120}
             height={60}
-            className={`w-auto object-contain transition-all duration-300
-              ${scrolled ? 'h-6 lg:h-14' : 'h-10 lg:h-[92]'}
-            `}
+            className={`w-auto object-contain transition-all duration-300 ${scrolled ? 'h-6 lg:h-14' : 'h-10 lg:h-22'} `}
           />
         </Link>
 
         {/* Desktop Menu */}
-        <nav className="hidden md:flex items-center gap-8 text-md">
+        <nav className="text-md hidden items-center gap-8 md:flex">
           {navItems.map((item) => {
-            const isActive =
-              pathname === item.href ||
-              (item.href !== '/' && pathname.startsWith(item.href));
+            const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
 
             return (
               <Link
                 key={item.name}
                 href={item.href}
-                className={`relative transition-colors
-                  ${
-                    isHome && !scrolled
-                      ? isActive
-                        ? 'text-[#ffd112] font-bold'
-                        : 'text-white hover:text-[#ffd112]'
-                      : isActive
-                      ? 'text-[#ffd112] font-bold'
+                className={`relative transition-colors ${
+                  isHome && !scrolled
+                    ? isActive
+                      ? 'font-bold text-[#ffd112]'
+                      : 'text-white hover:text-[#ffd112]'
+                    : isActive
+                      ? 'font-bold text-[#ffd112]'
                       : 'text-black hover:text-[#ffd112]'
-                  }`}
+                }`}
               >
                 {item.name}
-                {isActive && (
-                  <span className="absolute -bottom-1 left-0 h-[2px] w-full bg-[#ffd112]" />
-                )}
+                {isActive && <span className="absolute -bottom-1 left-0 h-[2px] w-full bg-[#ffd112]" />}
               </Link>
             );
           })}
@@ -96,23 +85,17 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-slate-950 border-t border-white/10">
+        <div className="border-t border-white/10 bg-slate-950 md:hidden">
           <nav className="flex flex-col space-y-4 px-6 py-6">
             {navItems.map((item) => {
-              const isActive =
-                pathname === item.href ||
-                (item.href !== '/' && pathname.startsWith(item.href));
+              const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
 
               return (
                 <Link
                   key={item.name}
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`${
-                    isActive
-                      ? 'text-[#ffd112] font-bold'
-                      : 'text-slate-300 hover:text-white'
-                  }`}
+                  className={`${isActive ? 'font-bold text-[#ffd112]' : 'text-slate-300 hover:text-white'}`}
                 >
                   {item.name}
                 </Link>

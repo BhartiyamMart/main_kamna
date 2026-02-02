@@ -1,12 +1,11 @@
-
-import KamnaCafe from '@/components/KamnaCafe'
+import KamnaCafe from '@/components/KamnaCafe';
 
 const page = () => {
   return (
     <div>
-        <KamnaCafe/>
+      <KamnaCafe />
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default page;

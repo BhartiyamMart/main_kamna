@@ -83,7 +83,8 @@ const BlogPage = () => {
                 <h3 className="mb-3 text-2xl font-bold">Explore Together</h3>
 
                 <p className="mb-6 text-sm text-white/90">
-                  At Kamna Group, we believe in building meaningful partnerships and careers that drive innovation and long-term growth.
+                  At Kamna Group, we believe in building meaningful partnerships and careers that drive innovation and
+                  long-term growth.
                 </p>
 
                 {/* Input */}
@@ -93,7 +94,7 @@ const BlogPage = () => {
                     placeholder="Email Address"
                     className="w-full bg-transparent px-4 py-3 text-sm placeholder-white/80 focus:outline-none"
                   />
-                  <button className="flex items-center cursor-pointer justify-center bg-[#21502c] p-3 hover:bg-[#2a6638]">
+                  <button className="flex cursor-pointer items-center justify-center bg-[#21502c] p-3 hover:bg-[#2a6638]">
                     <Send size={18} />
                   </button>
                 </div>

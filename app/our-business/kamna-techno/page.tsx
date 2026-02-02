@@ -1,11 +1,11 @@
-import KamnaTechno from '@/components/KamnaTechno'
+import KamnaTechno from '@/components/KamnaTechno';
 
 const page = () => {
   return (
     <div>
-        <KamnaTechno />
+      <KamnaTechno />
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default page;

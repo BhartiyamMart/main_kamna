@@ -7,7 +7,7 @@ import { uploadImageToS3, deleteImageFromS3 } from '@/lib/s3';
 /* ---------------------------
    HELPER: CHECK ADMIN
 --------------------------- */
-async function requireAdmin(token: string) {
+export async function requireAdmin(token: string) {
   const user = await getCurrentUser(token);
   if (!user) throw new Error('Unauthorized: Token invalid or expired');
   if (user.role !== 'ADMIN') throw new Error('Forbidden: Admin access required');
@@ -34,18 +34,13 @@ export async function uploadBlogImage(
   base64Data: string,
   fileName: string
 ): Promise<{ success: boolean; imageUrl?: string; error?: string }> {
-  console.log('🔐 Checking admin auth...');
-  
   try {
     await requireAdmin(token);
-    console.log('✅ Admin verified');
-    
+
     const imageUrl = await uploadImageToS3(base64Data, fileName);
-    console.log('✅ Upload successful:', imageUrl);
-    
+
     return { success: true, imageUrl };
   } catch (error: any) {
-    console.error('❌ Upload error:', error);
     return { success: false, error: error.message || 'Failed to upload image' };
   }
 }
@@ -53,19 +48,13 @@ export async function uploadBlogImage(
 /* ---------------------------
    DELETE IMAGE IMMEDIATELY
 --------------------------- */
-export async function deleteBlogImage(
-  token: string,
-  imageUrl: string
-): Promise<{ success: boolean; error?: string }> {
-  console.log('🗑️ Deleting image:', imageUrl);
-  
+export async function deleteBlogImage(token: string, imageUrl: string): Promise<{ success: boolean; error?: string }> {
   try {
     await requireAdmin(token);
     await deleteImageFromS3(imageUrl);
-    console.log('✅ Delete successful');
+
     return { success: true };
   } catch (error: any) {
-    console.error('❌ Delete error:', error);
     return { success: false, error: error.message || 'Failed to delete image' };
   }
 }
@@ -87,21 +76,12 @@ export async function createBlog(
     published?: boolean;
   }
 ) {
-  console.log('📝 Creating blog:', data.title);
-  console.log('📊 Data:', {
-    ...data,
-    content: data.content.substring(0, 50) + '...',
-  });
-  
   try {
     await requireAdmin(token);
-    console.log('✅ Admin verified');
 
     const slug = generateSlug(data.title);
     const publishedAt = data.published ? new Date() : undefined;
 
-    console.log('💾 Saving to database...');
-    
     const blog = await prisma.blog.create({
       data: {
         title: data.title,
@@ -118,10 +98,8 @@ export async function createBlog(
       },
     });
 
-    console.log('✅ Blog created successfully:', blog.id);
     return blog;
   } catch (error: any) {
-    console.error('❌ Create blog error:', error);
     throw new Error(error.message || 'Failed to create blog');
   }
 }
@@ -129,21 +107,32 @@ export async function createBlog(
 /* ---------------------------
    GET ALL BLOGS ADMIN
 --------------------------- */
-export async function getAllBlogsAdmin(token: string) {
-  console.log('📚 Fetching all blogs (admin)...');
-  
+export async function getBlogs() {
   try {
-    await requireAdmin(token);
-    
     const blogs = await prisma.blog.findMany({
+      where: { published: true },
       orderBy: { createdAt: 'desc' },
     });
-    
-    console.log('✅ Fetched', blogs.length, 'blogs');
+
     return blogs;
   } catch (error: any) {
-    console.error('❌ Fetch blogs error:', error);
     throw new Error(error.message || 'Failed to fetch blogs');
+  }
+}
+
+export async function getBlogById(id: string) {
+  try {
+    const blog = await prisma.blog.findUnique({
+      where: { id },
+    });
+
+    if (!blog) {
+      throw new Error('Blog not found');
+    }
+
+    return blog;
+  } catch (error: any) {
+    throw new Error(error.message || 'Failed to fetch blog');
   }
 }
 
@@ -165,8 +154,6 @@ export async function updateBlog(
     published?: boolean;
   }>
 ) {
-  console.log('📝 Updating blog:', id);
-  
   try {
     await requireAdmin(token);
 
@@ -175,10 +162,7 @@ export async function updateBlog(
 
     const slug = data.title ? generateSlug(data.title) : existingBlog.slug;
 
-    const publishedAt =
-      data.published && !existingBlog.published
-        ? new Date()
-        : existingBlog.publishedAt;
+    const publishedAt = data.published && !existingBlog.published ? new Date() : existingBlog.publishedAt;
 
     const blog = await prisma.blog.update({
       where: { id },
@@ -189,10 +173,8 @@ export async function updateBlog(
       },
     });
 
-    console.log('✅ Blog updated successfully');
     return blog;
   } catch (error: any) {
-    console.error('❌ Update blog error:', error);
     throw new Error(error.message || 'Failed to update blog');
   }
 }
@@ -201,8 +183,6 @@ export async function updateBlog(
    DELETE BLOG (ADMIN ONLY)
 --------------------------- */
 export async function deleteBlog(token: string, id: string) {
-  console.log('🗑️ Deleting blog:', id);
-  
   try {
     await requireAdmin(token);
 
@@ -211,16 +191,13 @@ export async function deleteBlog(token: string, id: string) {
 
     // Delete image from S3 if exists
     if (blog.image) {
-      console.log('🗑️ Deleting associated image from S3...');
       await deleteImageFromS3(blog.image);
     }
 
     await prisma.blog.delete({ where: { id } });
-    console.log('✅ Blog deleted successfully');
-    
+
     return { success: true };
   } catch (error: any) {
-    console.error('❌ Delete blog error:', error);
     throw new Error(error.message || 'Failed to delete blog');
   }
 }

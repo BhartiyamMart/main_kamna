@@ -51,7 +51,7 @@ export const MoreInfo = () => {
             >
               <div className="absolute inset-0 bg-[url('/img/a2.jpg')] bg-cover bg-center opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
               <div className="absolute inset-0 bg-black/50 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-              <div className="relative z-10 flex flex-col items-center justify-center text-center  ">
+              <div className="relative z-10 flex flex-col items-center justify-center text-center">
                 <h2 className="text-2xl font-semibold transition-colors duration-500 sm:text-3xl">Kamna Herbs </h2>
                 <p className="mt-1 text-sm sm:text-base">Herbal Wellness</p>
               </div>
@@ -64,12 +64,10 @@ export const MoreInfo = () => {
               <div className="absolute inset-0 bg-[url('/img/a3.jpg')] bg-cover bg-center opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
               <div className="absolute inset-0 bg-black/50 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
               <div className="relative z-10 flex flex-col items-center justify-center text-center text-white">
-                <h2 className="text-2xl font-semibold transition-colors duration-500 sm:text-3xl">Kamna Digital  </h2>
+                <h2 className="text-2xl font-semibold transition-colors duration-500 sm:text-3xl">Kamna Digital </h2>
                 <p className="mt-1 text-sm sm:text-base">Electronics & Digital Solutions</p>
               </div>
             </Link>
-            
-
           </div>
         </div>
       </div>

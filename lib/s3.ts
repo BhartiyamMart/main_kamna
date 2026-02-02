@@ -20,12 +20,9 @@ const BUCKET_NAME = process.env.AWS_S3_BUCKET_NAME!;
 /* ---------------------------
    UPLOAD IMAGE TO S3
 --------------------------- */
-export async function uploadImageToS3(
-  base64Data: string,
-  fileName: string
-): Promise<string> {
+export async function uploadImageToS3(base64Data: string, fileName: string): Promise<string> {
   console.log('📤 Starting S3 upload for:', fileName);
-  
+
   try {
     // Extract base64 data and mime type
     const matches = base64Data.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
@@ -35,12 +32,12 @@ export async function uploadImageToS3(
 
     const contentType = matches[1];
     const base64Content = matches[2];
-    
+
     console.log('📊 Base64 length:', base64Content.length);
-    console.log('📊 Estimated size:', (base64Content.length * 0.75 / 1024 / 1024).toFixed(2), 'MB');
-    
+    console.log('📊 Estimated size:', ((base64Content.length * 0.75) / 1024 / 1024).toFixed(2), 'MB');
+
     const buffer = Buffer.from(base64Content, 'base64');
-    
+
     console.log('📦 Buffer size:', (buffer.length / 1024 / 1024).toFixed(2), 'MB');
 
     // Generate unique filename
@@ -59,11 +56,11 @@ export async function uploadImageToS3(
 
     console.log('☁️ Uploading to S3...');
     const command = new PutObjectCommand(uploadParams);
-    
+
     const startTime = Date.now();
     await s3Client.send(command);
     const endTime = Date.now();
-    
+
     console.log('✅ S3 upload complete in', (endTime - startTime) / 1000, 'seconds');
 
     // Return the public URL
@@ -82,11 +79,11 @@ export async function uploadImageToS3(
 --------------------------- */
 export async function deleteImageFromS3(imageUrl: string): Promise<void> {
   console.log('🗑️ Deleting from S3:', imageUrl);
-  
+
   try {
     // Extract key from URL
     const key = imageUrl.split('.amazonaws.com/')[1];
-    
+
     if (!key) {
       throw new Error('Invalid S3 URL');
     }
@@ -98,7 +95,7 @@ export async function deleteImageFromS3(imageUrl: string): Promise<void> {
 
     const command = new DeleteObjectCommand(deleteParams);
     await s3Client.send(command);
-    
+
     console.log('✅ Image deleted from S3');
   } catch (error: any) {
     console.error('❌ S3 delete error:', error);

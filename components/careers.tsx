@@ -1,37 +1,18 @@
 import React from 'react';
 import Footer from './home/footer';
 import Header from './home/header';
-import { ContactSection } from './home/ContactSection';
-
-const jobs = [
-  {
-    title: 'Frontend Developer',
-    location: 'Remote / India',
-    type: 'Full Time',
-    experience: '2+ Years',
-  },
-  {
-    title: 'Backend Developer',
-    location: 'Noida',
-    type: 'Full Time',
-    experience: '3+ Years',
-  },
-  {
-    title: 'UI/UX Designer',
-    location: 'Remote',
-    type: 'Contract',
-    experience: '1+ Year',
-  },
-];
+import { CareerSection } from './CareerSection';
 
 export default function CareersPage() {
   return (
     <>
       <Header />
+
+      {/* Hero Banner */}
       <section className="container mx-auto mt-18 flex h-[60vh] flex-col items-center justify-center bg-[url('/img/career-img.jpg')] bg-cover bg-top px-4 lg:px-22">
-        <img src="/img/career-img.gif" alt="Kamna Cafe Logo" className="mb-6 h-auto w-40 lg:w-44" />
+        <img src="/img/career-img.gif" alt="Kamna Group Careers" className="mb-6 h-auto w-40 lg:w-44" />
         <p className="text-md mb-2 text-[#d9af00]">HOME / Careers</p>
-        <h1 className="text-2xl font-bold text-[#d9af00] lg:text-6xl">Careers </h1>
+        <h1 className="text-2xl font-bold text-[#d9af00] lg:text-6xl">Careers</h1>
       </section>
 
       <div className="bg-gray-50">
@@ -45,6 +26,7 @@ export default function CareersPage() {
           </div>
         </section>
 
+        {/* About Working with Kamna Group */}
         <section className="relative bg-white py-16 sm:py-20">
           <div className="container mx-auto px-4 lg:px-20">
             <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-center">
@@ -58,7 +40,7 @@ export default function CareersPage() {
                   Working with Kamna Group offers an opportunity to be part of a forward-thinking, purpose-driven
                   organisation that values innovation, integrity, and people. As a diversified group operating across
                   technology, retail, food and beverage, wellness, and digital transformation, it provides a dynamic
-                  work environment where ideas are encouraged and talent is nurtured across multiple domains
+                  work environment where ideas are encouraged and talent is nurtured across multiple domains.
                 </p>
 
                 <p className="mt-4 text-base leading-relaxed text-gray-700 sm:text-lg">
@@ -78,8 +60,8 @@ export default function CareersPage() {
           </div>
         </section>
 
-        <div className="bg-gray-50">
-          <ContactSection />
+        <div className="bg-white">
+          <CareerSection />
         </div>
 
         <Footer />

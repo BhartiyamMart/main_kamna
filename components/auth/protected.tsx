@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React, { useEffect, useState, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
@@ -17,10 +17,10 @@ const ProtectedAdmin: React.FC<ProtectedAdminProps> = ({ children }) => {
     const checkAdmin = async () => {
       try {
         const response = await checkAdminAuth();
-        console.log("response", response)
+        console.log('response', response);
         const role = response.role;
-        const token = response.token
-        const user = "ADMIN"
+        const token = response.token;
+        const user = 'ADMIN';
         if (!token || user !== role || !user) {
           router.replace('/login'); // redirect if no token
           return;

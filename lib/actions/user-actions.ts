@@ -46,22 +46,21 @@ export async function loginUser(email: string, password: string) {
   // Create token
   const token = randomUUID();
   const encryptedToken = await encryptKey(token);
-  
-    await prisma.token.create({
-      data: {
-        token: encryptedToken,
-        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
-        userId: user.id,
-      },
-    });
 
+  await prisma.token.create({
+    data: {
+      token: encryptedToken,
+      expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+      userId: user.id,
+    },
+  });
 
   return {
     error: false,
     message: 'User login successfully',
     payload: {
-      user : user.role,
-      token: encryptedToken
+      user: user.role,
+      token: encryptedToken,
     },
   };
 }
@@ -72,7 +71,7 @@ export async function loginUser(email: string, password: string) {
 export async function logoutUser(token: string) {
   await prisma.token.deleteMany({ where: { token } });
   await Logout;
-  console.log("this logout is called")
+  console.log('this logout is called');
   return { success: true };
 }
 

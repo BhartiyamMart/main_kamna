@@ -1,11 +1,11 @@
-import WorkWith from '@/components/WorkWith'
+import WorkWith from '@/components/WorkWith';
 
 const page = () => {
   return (
     <div>
-        <WorkWith />
+      <WorkWith />
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default page;

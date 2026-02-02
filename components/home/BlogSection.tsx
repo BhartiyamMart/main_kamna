@@ -1,12 +1,11 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { useEffect, useState, useCallback } from 'react';
-// Use public getBlogs, not admin
 import toast from 'react-hot-toast';
-import { getAllBlogsAdmin } from '@/lib/actions/blog-actions';
-import { checkAdminAuth } from '@/lib/actions/cookies';
+import { getBlogs } from '@/lib/actions/blog-actions';
 
 interface Blog {
   id: string;
@@ -27,17 +26,12 @@ export function BlogSection() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch only published blogs for public page
+  // ✅ No authentication needed - public blogs only
   const fetchBlogs = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await checkAdminAuth();
-      if (!response.token) {
-        toast.error('No authentication token found');
-        return;
-      }
-      const token = response.token;
-      const data = await getAllBlogsAdmin(token); // Public function - no auth needed
+      const data = await getBlogs(); // ✅ Public function
+      console.log('Fetched blogs:', data);
       setBlogs(data.slice(0, 3)); // Show only 3 latest blogs
     } catch (error) {
       console.error('Failed to fetch blogs:', error);
@@ -49,7 +43,7 @@ export function BlogSection() {
 
   useEffect(() => {
     fetchBlogs();
-  }, [fetchBlogs]); // ✅ Correct dependency
+  }, [fetchBlogs]);
 
   // Format date
   const formatDate = (date: Date): string => {
@@ -94,14 +88,15 @@ export function BlogSection() {
               Stay updated with the latest trends, news, and insights from the Kamna Group of Companies.
             </p>
           </div>
-          <a href="/blogs" className="flex items-center gap-2 font-semibold text-[#006666] hover:underline">
-            View all posts <ArrowRight className="h-4 w-4" />
-          </a>
         </div>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {blogs.map((post) => (
-            <a key={post.id} href={`/blog/${post.slug}`} className="group cursor-pointer">
+            <Link
+              key={post.id}
+              href={`/blog-kamna/blog/${post.id}`} // ✅ Navigate with ID
+              className="group cursor-pointer"
+            >
               <div className="relative mb-6 aspect-[16/10] overflow-hidden rounded-md bg-slate-100">
                 {post.image ? (
                   <Image
@@ -130,7 +125,7 @@ export function BlogSection() {
                   Read More <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </div>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       </div>

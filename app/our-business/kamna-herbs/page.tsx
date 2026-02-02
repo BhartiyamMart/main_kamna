@@ -1,13 +1,12 @@
-import KamnaHerbs from '@/components/KamnaHerbs'
-import React from 'react'
+import KamnaHerbs from '@/components/KamnaHerbs';
+import React from 'react';
 
 const page = () => {
   return (
     <div>
-        <KamnaHerbs/>
-
+      <KamnaHerbs />
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default page;

@@ -1,12 +1,12 @@
-import KamnaDigital from '@/components/KamnaDigital'
-import React from 'react'
+import KamnaDigital from '@/components/KamnaDigital';
+import React from 'react';
 
 const page = () => {
   return (
     <div>
-        <KamnaDigital/>
+      <KamnaDigital />
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default page;

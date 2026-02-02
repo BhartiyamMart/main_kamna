@@ -1,12 +1,12 @@
-import CareersPage from '@/components/careers'
-import React from 'react'
+import CareersPage from '@/components/careers';
+import React from 'react';
 
 const page = () => {
   return (
-    <div>
-        <CareersPage />
-    </div>
-  )
-}
+    <>
+      <CareersPage />
+    </>
+  );
+};
 
-export default page
+export default page;

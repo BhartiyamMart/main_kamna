@@ -29,18 +29,14 @@ const base64ToArrayBuffer = (base64: string): ArrayBuffer => {
 
 const getKey = async (): Promise<CryptoKey> => {
   //  Now passes ArrayBuffer to importKey
-  const keyMaterial = await crypto.subtle.importKey(
-    'raw',
-    stringToArrayBuffer(SECRET_KEY),
-    'PBKDF2',
-    false,
-    ['deriveKey']
-  );
+  const keyMaterial = await crypto.subtle.importKey('raw', stringToArrayBuffer(SECRET_KEY), 'PBKDF2', false, [
+    'deriveKey',
+  ]);
 
   return crypto.subtle.deriveKey(
     {
       name: 'PBKDF2',
-      salt: stringToArrayBuffer('salt'),  //  ArrayBuffer
+      salt: stringToArrayBuffer('salt'), //  ArrayBuffer
       iterations: 100000,
       hash: 'SHA-256',
     },
@@ -55,11 +51,7 @@ export const encryptKey = async (token: string): Promise<string> => {
   const key = await getKey();
   const iv = crypto.getRandomValues(new Uint8Array(12));
   //  stringToArrayBuffer now returns ArrayBuffer
-  const encrypted = await crypto.subtle.encrypt(
-    { name: 'AES-GCM', iv },
-    key,
-    stringToArrayBuffer(token)
-  );
+  const encrypted = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, stringToArrayBuffer(token));
 
   const combined = new Uint8Array(iv.length + encrypted.byteLength);
   combined.set(iv);
@@ -77,11 +69,7 @@ export const decryptKey = async (encryptedToken: string): Promise<string> => {
   const iv = combinedBytes.subarray(0, 12);
   const encrypted = combinedBytes.subarray(12);
 
-  const decrypted = await crypto.subtle.decrypt(
-    { name: 'AES-GCM', iv },
-    key,
-    encrypted
-  );
+  const decrypted = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, encrypted);
 
   return arrayBufferToString(decrypted);
 };

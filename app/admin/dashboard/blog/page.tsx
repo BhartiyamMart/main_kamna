@@ -1,13 +1,12 @@
-import React from 'react'
-import BlogPage from '@/components/admin/create-blog'
-
+import React from 'react';
+import BlogPage from '@/components/admin/create-blog';
 
 const page = () => {
   return (
     <>
-    <BlogPage/>
+      <BlogPage />
     </>
-  )
-}
+  );
+};
 
-export default page
+export default page;

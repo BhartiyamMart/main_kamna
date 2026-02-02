@@ -3,10 +3,8 @@
 
 @custom-variant dark (&:is(.dark *));
 .input {
-  @apply w-full h-11 rounded-md border border-gray-300 px-4 text-sm
-         focus:outline-none focus:ring-2 focus:ring-green-500;
+  @apply h-11 w-full rounded-md border border-gray-300 px-4 text-sm focus:ring-2 focus:ring-green-500 focus:outline-none;
 }
-
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -121,6 +119,16 @@
   --animate-float-slow: float 30s ease-in-out 2s infinite;
   --shadow-custom: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
 
 @keyframes float {
   0%,
@@ -143,4 +151,3 @@
     @apply bg-background text-foreground;
   }
 }
-

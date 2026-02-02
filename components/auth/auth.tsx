@@ -33,9 +33,8 @@ export default function AuthPage() {
       if (isLogin) {
         // SIGN IN
         const response = await loginUser(email, password);
-        cookieStore.set('token',response.payload.token
-        )
-        cookieStore.set("role" , response.payload.user);
+        cookieStore.set('token', response.payload.token);
+        cookieStore.set('role', response.payload.user);
         router.push('admin/dashboard');
       } else {
         // SIGN UP

@@ -9,22 +9,26 @@ const DATA = {
       url: '/admin/dashboard',
       icon: Icon.LayoutDashboard,
     },
-   {
+    {
       title: 'Blog',
       url: '/admin/dashboard/blog',
       icon: Icon.TableOfContents,
     },
     {
-      title: 'Carrer',
-      url: '/admin/dashboard',
+      title: 'Applications',
+      url: '/admin/dashboard/applications',
       icon: Icon.Book,
     },
     {
       title: 'Contact',
-      url: '/admin/dashboard',
+      url: '/admin/dashboard/contact',
       icon: Icon.Phone,
     },
-   
+    {
+      title: 'Job',
+      url: '/admin/dashboard/job',
+      icon: Icon.AlarmClock,
+    },
   ],
   uNav: {
     message: 'Flat 10% off on every package',
@@ -176,9 +180,7 @@ const DATA = {
       readTime: '6 min read',
       featured: false,
     },
-    
   ],
-  
 };
 
 export default DATA;

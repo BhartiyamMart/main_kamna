@@ -13,11 +13,11 @@ const page = () => {
       <HeroSection />
       <MoreInfo />
       <AboutHome />
-       <BlogSection />
-       <div className="bg-gray-50">
-        <ContactSection/>
-       </div>
-       
+      <BlogSection />
+      <div className="bg-gray-50">
+        <ContactSection />
+      </div>
+
       {/* <FeaturesSection /> */}
       <Footer />
     </>

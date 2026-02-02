@@ -11,10 +11,9 @@ import {
   deleteBlog,
   uploadBlogImage,
   deleteBlogImage,
-  getAllBlogsAdmin,
+  getBlogs,
 } from '@/lib/actions/blog-actions';
 import { checkAdminAuth } from '@/lib/actions/cookies';
-import { stringify } from 'querystring';
 
 interface Blog {
   id: string;
@@ -36,6 +35,7 @@ export default function BlogPage() {
   const [currentView, setCurrentView] = useState<'list' | 'form'>('list');
   const [editId, setEditId] = useState<string | null>(null);
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
+  const [previousImageUrl, setPreviousImageUrl] = useState<string | null>(null); // ✅ Track old image
   const [isUploading, setIsUploading] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -50,30 +50,26 @@ export default function BlogPage() {
     published: false,
   });
 
-  // Fetch blogs on mount
   useEffect(() => {
     fetchBlogs();
   }, []);
 
- const fetchBlogs = async () => {
-  try {
-    const response = await checkAdminAuth();
-    
-    if (!response.token) {
-      toast.error('No authentication token found');
-      return;
-    }
-    
-    const token = response.token; // Now TypeScript knows it's a string
-    
-    const data = await getAllBlogsAdmin(token);
-    setBlogs(data);
-  } catch (error) {
-    console.error('Failed to fetch blogs:', error);
-    toast.error('Failed to load blogs');
-  }
-};
+  const fetchBlogs = async () => {
+    try {
+      const response = await checkAdminAuth();
 
+      if (!response.token) {
+        toast.error('No authentication token found');
+        return;
+      }
+
+      const data = await getBlogs();
+      setBlogs(data);
+    } catch (error) {
+      console.error('Failed to fetch blogs:', error);
+      toast.error('Failed to load blogs');
+    }
+  };
 
   const formatDate = (date: Date): string => {
     const d = new Date(date);
@@ -83,21 +79,16 @@ export default function BlogPage() {
     return `${day}-${month}-${year}`;
   };
 
- const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const { name, value, type, checked } = e.target;
-  
-  setFormData({
-    ...formData,
-    [name]: type === 'checkbox' 
-      ? checked 
-      : name === 'readTime' 
-        ? parseInt(value, 10) || 0  // Convert to number
-        : value,
-  });
-};
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
 
+    setFormData({
+      ...formData,
+      [name]: type === 'checkbox' ? checked : name === 'readTime' ? parseInt(value, 10) || 0 : value,
+    });
+  };
 
-  // Handle image upload with compression and immediate S3 upload
+  // ✅ Handle image upload with proper old image tracking
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -105,27 +96,26 @@ export default function BlogPage() {
     const isImage = file.type.startsWith('image/');
 
     if (!isImage) {
-      alert('Please upload only images (PNG, JPG, JPEG)');
+      toast.error('Please upload only images (PNG, JPG, JPEG)');
       return;
     }
 
-    // Check file size (100MB limit)
     if (file.size > 100 * 1024 * 1024) {
-      alert('File size should be less than 100MB');
+      toast.error('File size should be less than 100MB');
       return;
     }
 
     setIsUploading(true);
+    const toastId = toast.loading('Compressing image...');
 
     try {
-      // Compress image in browser
       const base64Data = await compressImage(file);
+      toast.loading('Uploading to S3...', { id: toastId });
 
-      // Upload to S3 immediately
-       const response = await checkAdminAuth();
+      const response = await checkAdminAuth();
       const token = response.token;
       if (!token) {
-        alert('Please login first');
+        toast.error('Please login first', { id: toastId });
         setIsUploading(false);
         return;
       }
@@ -133,90 +123,98 @@ export default function BlogPage() {
       const result = await uploadBlogImage(token, base64Data, file.name);
 
       if (result.success && result.imageUrl) {
-        // Delete old image if exists
+        // ✅ Delete old image only if a new one is uploaded
         if (uploadedImageUrl) {
+          console.log('Deleting old image:', uploadedImageUrl);
           await deleteBlogImage(token, uploadedImageUrl);
         }
 
         setUploadedImageUrl(result.imageUrl);
-        
+        toast.success('Image uploaded successfully!', { id: toastId });
       } else {
-        alert(result.error || 'Upload failed');
+        toast.error(result.error || 'Upload failed', { id: toastId });
       }
     } catch (error) {
       console.error('Upload error:', error);
-      alert('Failed to upload image');
+      toast.error('Failed to upload image', { id: toastId });
     } finally {
       setIsUploading(false);
-      e.target.value = ''; // Reset input
+      e.target.value = '';
     }
   };
 
-  // Remove uploaded image from S3
+  // ✅ Remove uploaded image from S3
   const removeUploadedImage = async () => {
     if (!uploadedImageUrl) return;
 
-    const confirmed = confirm('Are you sure you want to remove this image?');
-    if (!confirmed) return;
-
-    const token = localStorage.getItem('token');
-    if (!token) return;
+    const response = await checkAdminAuth();
+    if (!response.token) {
+      toast.error('Authentication required');
+      return;
+    }
 
     setIsUploading(true);
+    const toastId = toast.loading('Removing image...');
+
     try {
-      const result = await deleteBlogImage(token, uploadedImageUrl);
+      const result = await deleteBlogImage(response.token, uploadedImageUrl);
       if (result.success) {
         setUploadedImageUrl(null);
-        alert('Image removed successfully!');
+        toast.success('Image removed successfully!', { id: toastId });
       } else {
-        alert(result.error || 'Failed to remove image');
+        toast.error(result.error || 'Failed to remove image', { id: toastId });
       }
     } catch (error) {
       console.error('Delete error:', error);
-      alert('Failed to remove image');
+      toast.error('Failed to remove image', { id: toastId });
     } finally {
       setIsUploading(false);
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const response = await checkAdminAuth();
-  
-  if (!response.token) {
-    toast.error('Authentication token not found');
-    return;
-  }
+    const response = await checkAdminAuth();
 
-  setLoading(true);
-  const toastId = toast.loading(editId ? 'Updating blog...' : 'Creating blog...');
-
-  try {
-    const blogData = {
-      ...formData,
-      readTime: parseInt(formData.readTime.toString(), 10), // Convert to number
-      image: uploadedImageUrl || undefined,
-    };
-
-    if (editId) {
-      await updateBlog(response.token, editId, blogData);
-      toast.success('Blog updated successfully!', { id: toastId });
-    } else {
-      await createBlog(response.token, blogData);
-      toast.success('Blog created successfully!', { id: toastId });
+    if (!response.token) {
+      toast.error('Authentication token not found');
+      return;
     }
 
-    await fetchBlogs();
-    resetForm();
-  } catch (error: any) {
-    console.error('Submit error:', error);
-    toast.error(error.message || 'Failed to save blog', { id: toastId });
-  } finally {
-    setLoading(false);
-  }
-};
+    setLoading(true);
+    const toastId = toast.loading(editId ? 'Updating blog...' : 'Creating blog...');
 
+    try {
+      const blogData = {
+        ...formData,
+        readTime: parseInt(formData.readTime.toString(), 10),
+        image: uploadedImageUrl || undefined, // ✅ Use new image
+      };
+
+      if (editId) {
+        // ✅ Delete previous image if it was replaced
+        if (previousImageUrl && uploadedImageUrl && previousImageUrl !== uploadedImageUrl) {
+          console.log('Deleting replaced image:', previousImageUrl);
+          await deleteBlogImage(response.token, previousImageUrl);
+        }
+
+        await updateBlog(response.token, editId, blogData);
+        toast.success('Blog updated successfully!', { id: toastId });
+      } else {
+        await createBlog(response.token, blogData);
+        toast.success('Blog created successfully!', { id: toastId });
+      }
+
+      await fetchBlogs();
+      resetForm();
+    } catch (error: any) {
+      console.error('Submit error:', error);
+      toast.error(error.message || 'Failed to save blog', { id: toastId });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const resetForm = () => {
     setFormData({
@@ -232,6 +230,7 @@ export default function BlogPage() {
     setEditId(null);
     setCurrentView('list');
     setUploadedImageUrl(null);
+    setPreviousImageUrl(null); // ✅ Reset previous image
   };
 
   const handleEdit = (blog: Blog) => {
@@ -247,23 +246,30 @@ export default function BlogPage() {
     });
     setEditId(blog.id);
     setUploadedImageUrl(blog.image);
+    setPreviousImageUrl(blog.image); // ✅ Store original image
     setCurrentView('form');
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this blog?')) return;
+    const response = await checkAdminAuth();
+    if (!response.token) {
+      toast.error('Authentication required');
+      return;
+    }
 
-    const token = localStorage.getItem('token');
-    if (!token) return;
+    const confirmed = confirm('Are you sure you want to delete this blog?');
+    if (!confirmed) return;
 
     setLoading(true);
+    const toastId = toast.loading('Deleting blog...');
+
     try {
-      await deleteBlog(token, id);
+      await deleteBlog(response.token, id);
       await fetchBlogs();
-      alert('Blog deleted successfully!');
+      toast.success('Blog deleted successfully!', { id: toastId });
     } catch (error) {
       console.error('Delete error:', error);
-      alert('Failed to delete blog');
+      toast.error('Failed to delete blog', { id: toastId });
     } finally {
       setLoading(false);
     }
@@ -293,7 +299,7 @@ export default function BlogPage() {
                 <button
                   onClick={openAddForm}
                   disabled={loading}
-                  className="flex items-center gap-1 rounded-lg bg-[#F0701E] px-4 py-2 font-medium text-white shadow-sm transition-all duration-200 hover:bg-[#d96419] disabled:opacity-50"
+                  className="flex cursor-pointer items-center gap-1 rounded-lg bg-red-500 px-4 py-2 font-medium text-white shadow-sm transition-all duration-200 hover:bg-[#d96419] disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <Plus size={20} />
                   Add New Blog
@@ -316,7 +322,7 @@ export default function BlogPage() {
                 </p>
                 <button
                   onClick={openAddForm}
-                  className="inline-flex items-center gap-1 rounded-lg bg-[#F0701E] px-4 py-2 font-medium text-white shadow-sm transition-all duration-200 hover:bg-[#d96419]"
+                  className="inline-flex cursor-pointer items-center gap-1 rounded-lg bg-red-500 px-4 py-2 font-medium text-white shadow-sm transition-all duration-200 hover:bg-[#d96419]"
                 >
                   <Plus size={20} />
                   Create First Blog
@@ -329,28 +335,28 @@ export default function BlogPage() {
                 <table className="min-w-full divide-y divide-gray-100">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
+                      <th className="px-6 py-4 text-left text-xs font-semibold tracking-wider text-gray-600 uppercase">
                         #
                       </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
+                      <th className="px-6 py-4 text-left text-xs font-semibold tracking-wider text-gray-600 uppercase">
                         Title
                       </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
+                      <th className="px-6 py-4 text-left text-xs font-semibold tracking-wider text-gray-600 uppercase">
                         Author
                       </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
+                      <th className="px-6 py-4 text-left text-xs font-semibold tracking-wider text-gray-600 uppercase">
                         Category
                       </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
+                      <th className="px-6 py-4 text-left text-xs font-semibold tracking-wider text-gray-600 uppercase">
                         Read Time
                       </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
+                      <th className="px-6 py-4 text-left text-xs font-semibold tracking-wider text-gray-600 uppercase">
                         Status
                       </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
+                      <th className="px-6 py-4 text-left text-xs font-semibold tracking-wider text-gray-600 uppercase">
                         Date
                       </th>
-                      <th className="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider text-gray-600">
+                      <th className="px-6 py-4 text-center text-xs font-semibold tracking-wider text-gray-600 uppercase">
                         Actions
                       </th>
                     </tr>
@@ -358,18 +364,16 @@ export default function BlogPage() {
                   <tbody className="divide-y divide-gray-100 bg-white">
                     {blogs.map((blog, index) => (
                       <tr key={blog.id} className="transition-all duration-200 hover:bg-gray-50">
-                        <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{index + 1}</td>
-                        <td className="max-w-md truncate px-6 py-4 text-sm font-medium text-gray-900">
-                          {blog.title}
-                        </td>
-                        <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-700">{blog.author}</td>
-                        <td className="whitespace-nowrap px-6 py-4">
+                        <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-500">{index + 1}</td>
+                        <td className="max-w-md truncate px-6 py-4 text-sm font-medium text-gray-900">{blog.title}</td>
+                        <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-700">{blog.author}</td>
+                        <td className="px-6 py-4 whitespace-nowrap">
                           <span className="rounded-full bg-gray-50 px-3 py-1 text-xs font-medium text-gray-700">
                             {blog.category}
                           </span>
                         </td>
-                        <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{blog.readTime} min</td>
-                        <td className="whitespace-nowrap px-6 py-4">
+                        <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-500">{blog.readTime} min</td>
+                        <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex gap-2">
                             {blog.featured && (
                               <span className="rounded-full bg-yellow-100 px-2 py-1 text-xs font-medium text-yellow-800">
@@ -385,15 +389,15 @@ export default function BlogPage() {
                             </span>
                           </div>
                         </td>
-                        <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                        <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-500">
                           {formatDate(blog.createdAt)}
                         </td>
-                        <td className="whitespace-nowrap px-6 py-4 text-center">
+                        <td className="px-6 py-4 text-center whitespace-nowrap">
                           <div className="flex justify-center gap-2">
                             <button
                               onClick={() => handleEdit(blog)}
                               disabled={loading}
-                              className="rounded-lg p-2 text-gray-600 transition-all duration-200 hover:bg-gray-50 hover:text-[#F0701E] disabled:opacity-50"
+                              className="cursor-pointer rounded-lg p-2 text-gray-600 transition-all duration-200 hover:bg-gray-50 hover:text-[#F0701E] disabled:cursor-not-allowed disabled:opacity-50"
                               title="Edit"
                             >
                               <Pencil size={18} />
@@ -401,7 +405,7 @@ export default function BlogPage() {
                             <button
                               onClick={() => handleDelete(blog.id)}
                               disabled={loading}
-                              className="rounded-lg p-2 text-gray-600 transition-all duration-200 hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
+                              className="cursor-pointer rounded-lg p-2 text-gray-600 transition-all duration-200 hover:bg-red-50 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-50"
                               title="Delete"
                             >
                               <Trash size={18} />
@@ -439,14 +443,14 @@ export default function BlogPage() {
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div>
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
-                  Category <span className="text-[#F0701E]">*</span>
+                  Category <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
                   name="category"
                   value={formData.category}
                   onChange={handleInputChange}
-                  className="w-full rounded-lg border border-gray-200 px-4 py-3 transition-all duration-200 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#F0701E]"
+                  className="w-full rounded-lg border border-gray-200 px-4 py-3 transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-[#F0701E] focus:outline-none"
                   placeholder="e.g., Recipes, Wellness"
                   required
                   disabled={loading}
@@ -455,14 +459,14 @@ export default function BlogPage() {
 
               <div>
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
-                  Author <span className="text-[#F0701E]">*</span>
+                  Author <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
                   name="author"
                   value={formData.author}
                   onChange={handleInputChange}
-                  className="w-full rounded-lg border border-gray-200 px-4 py-3 transition-all duration-200 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#F0701E]"
+                  className="w-full rounded-lg border border-gray-200 px-4 py-3 transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-[#F0701E] focus:outline-none"
                   placeholder="Your name"
                   required
                   disabled={loading}
@@ -473,14 +477,14 @@ export default function BlogPage() {
             {/* Title */}
             <div>
               <label className="mb-2 block text-sm font-semibold text-gray-700">
-                Title <span className="text-[#F0701E]">*</span>
+                Title <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
                 name="title"
                 value={formData.title}
                 onChange={handleInputChange}
-                className="w-full rounded-lg border border-gray-200 px-4 py-3 transition-all duration-200 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#F0701E]"
+                className="w-full rounded-lg border border-gray-200 px-4 py-3 transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-[#F0701E] focus:outline-none"
                 placeholder="Enter a compelling title"
                 required
                 disabled={loading}
@@ -490,14 +494,14 @@ export default function BlogPage() {
             {/* Excerpt/Subtitle */}
             <div>
               <label className="mb-2 block text-sm font-semibold text-gray-700">
-                Excerpt <span className="text-[#F0701E]">*</span>
+                Excerpt <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
                 name="excerpt"
                 value={formData.excerpt}
                 onChange={handleInputChange}
-                className="w-full rounded-lg border border-gray-200 px-4 py-3 transition-all duration-200 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#F0701E]"
+                className="w-full rounded-lg border border-gray-200 px-4 py-3 transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-[#F0701E] focus:outline-none"
                 placeholder="Add a short excerpt or subtitle"
                 required
                 disabled={loading}
@@ -514,7 +518,7 @@ export default function BlogPage() {
                     <div className="flex flex-col items-center">
                       <Loader2 className="mx-auto mb-4 animate-spin text-[#F0701E]" size={48} />
                       <p className="text-sm text-gray-600">Compressing and uploading to S3...</p>
-                      <p className="text-xs text-gray-500 mt-1">This may take a moment</p>
+                      <p className="mt-1 text-xs text-gray-500">This may take a moment</p>
                     </div>
                   ) : (
                     <>
@@ -525,9 +529,7 @@ export default function BlogPage() {
                         </span>
                         <span className="text-gray-600"> or drag and drop</span>
                       </label>
-                      <p className="mt-2 text-xs text-gray-500">
-                        Images (PNG, JPG, JPEG - max 100MB)
-                      </p>
+                      <p className="mt-2 text-xs text-gray-500">Images (PNG, JPG, JPEG - max 100MB)</p>
                       <p className="text-xs text-gray-500">Image will be compressed and uploaded to S3 automatically</p>
                       <input
                         id="file-upload"
@@ -547,11 +549,11 @@ export default function BlogPage() {
                     type="button"
                     onClick={removeUploadedImage}
                     disabled={isUploading || loading}
-                    className="absolute right-2 top-2 rounded-full bg-red-500 p-2 text-white transition-colors hover:bg-red-600 disabled:opacity-50"
+                    className="absolute top-2 right-2 cursor-pointer rounded-full bg-red-500 p-2 text-white transition-colors hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {isUploading ? <Loader2 className="animate-spin" size={16} /> : <X size={16} />}
                   </button>
-                  <div className="absolute bottom-0 left-0 right-0 bg-black/50 px-4 py-2">
+                  <div className="absolute right-0 bottom-0 left-0 bg-black/50 px-4 py-2">
                     <p className="text-xs text-white">Uploaded to S3</p>
                   </div>
                 </div>
@@ -561,19 +563,16 @@ export default function BlogPage() {
             {/* Description/Content */}
             <div>
               <label className="mb-2 block text-sm font-semibold text-gray-700">
-                Content <span className="text-[#F0701E]">*</span>
+                Content <span className="text-red-500">*</span>
               </label>
-              <TextEditor
-                value={formData.content}
-                onChange={(val) => setFormData({ ...formData, content: val })}
-              />
+              <TextEditor value={formData.content} onChange={(val) => setFormData({ ...formData, content: val })} />
             </div>
 
             {/* Read Time, Featured, Published */}
             <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
               <div>
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
-                  Read Time (minutes) <span className="text-[#F0701E]">*</span>
+                  Read Time (minutes) <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="number"
@@ -581,7 +580,7 @@ export default function BlogPage() {
                   min="1"
                   value={formData.readTime}
                   onChange={handleInputChange}
-                  className="w-full rounded-lg border border-gray-200 px-4 py-3 transition-all duration-200 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#F0701E]"
+                  className="w-full rounded-lg border border-gray-200 px-4 py-3 transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-[#F0701E] focus:outline-none"
                   placeholder="5"
                   required
                   disabled={loading}

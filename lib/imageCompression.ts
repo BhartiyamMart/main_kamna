@@ -3,7 +3,7 @@ import imageCompression from 'browser-image-compression';
 export async function compressImage(file: File): Promise<string> {
   console.log('🗜️ Starting compression for:', file.name);
   console.log('📊 Original size:', (file.size / 1024 / 1024).toFixed(2), 'MB');
-  
+
   try {
     const options = {
       maxSizeMB: 0.3, // Reduce to 300KB (was 1MB)
@@ -14,9 +14,9 @@ export async function compressImage(file: File): Promise<string> {
     };
 
     const compressedFile = await imageCompression(file, options);
-    
+
     console.log('✅ Compressed to:', (compressedFile.size / 1024 / 1024).toFixed(2), 'MB');
-    
+
     // Convert to base64
     return new Promise((resolve, reject) => {
       const reader = new FileReader();

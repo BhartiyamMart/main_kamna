@@ -7,17 +7,19 @@ datasource db {
   provider = "postgresql"
 }
 
-/* =========================
-   USER & AUTH
-========================= */
+/**
+ * =========================
+ * USER & AUTH
+ * =========================
+ */
 
 model User {
-  id        String   @id @default(uuid()) @db.Uuid()
-  email     String   @unique
-  password  String
-  role      UserRole @default(ADMIN)
+  id       String   @id @default(uuid()) @db.Uuid()
+  email    String   @unique
+  password String
+  role     UserRole @default(ADMIN)
 
-  tokens    Token[]
+  tokens Token[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -26,14 +28,14 @@ model User {
 }
 
 model Token {
-  id         String   @id @default(uuid()) @db.Uuid()
-  token      String   @unique
-  expiresAt  DateTime
+  id        String   @id @default(uuid()) @db.Uuid()
+  token     String   @unique
+  expiresAt DateTime
 
-  userId     String   @db.Uuid()
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @db.Uuid()
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt  DateTime @default(now())
+  createdAt DateTime @default(now())
 
   @@map("tokens")
 }
@@ -44,38 +46,71 @@ enum UserRole {
   MARKETING
 }
 
-/* =========================
-   CAREER / JOB APPLICATION
-========================= */
+/**
+ * =========================
+ * CAREER / JOB APPLICATION
+ * =========================
+ */
 
-model Career {
-  id            String   @id @default(uuid()) @db.Uuid()
+model Job {
+  id String @id @default(uuid()) @db.Uuid()
+
+  title      String
+  department String
+  location   String
+  jobType    JobType
+  experience Float // e.g., "2-5 years", "Fresher"
+
+  description      String @db.Text
+  responsibilities String @db.Text
+  requirements     String @db.Text
+
+  salaryStartRange Float
+  salaryEndRange   Float
+  positions        Int   @default(1)
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  applications Application[]
+
+  @@map("jobs")
+}
+
+model Application {
+  id String @id @default(uuid()) @db.Uuid()
+
+  // Job Reference
+  jobId String @db.Uuid()
+  job   Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)
 
   // Candidate Info
-  firstName     String
-  lastName      String
-  email         String
-  phoneNumber   String
+  firstName   String
+  lastName    String
+  email       String
+  phoneNumber String
 
-  // Job Info
-  position      String
-  department    String?
-  jobType       JobType
-  location      String?
+  //last org
+  startDate  String?
+  endDate  String?
+  currentWorking Boolean
 
   // Professional Info
-  experience    Int?
-  currentCTC    String?
-  expectedCTC   String?
-  noticePeriod  String?
+  experience   Int?
+  currentCTC   Float
+  expectedCTC  Float
+  noticePeriod String?
 
   // Application
-  resumeUrl     String
-  coverLetter   String? @db.Text
-  status        ApplicationStatus @default(APPLIED)
+  resumeUrl   String
+  coverLetter String?           @db.Text
+  status      ApplicationStatus @default(APPLIED)
+  isRead      Boolean           @default(false)
 
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("careers")
 }
@@ -96,46 +131,50 @@ enum ApplicationStatus {
   HIRED
 }
 
-/* =========================
-   CONTACT / ENQUIRY
-========================= */
+/**
+ * =========================
+ * CONTACT / ENQUIRY
+ * =========================
+ */
 
 model Contact {
-  id          String   @id @default(uuid()) @db.Uuid()
+  id          String  @id @default(uuid()) @db.Uuid()
   firstName   String
   lastName    String
   email       String
   phoneNumber String
   subject     String
-  message     String @db.Text
-  isRead      Boolean  @default(false)
+  message     String  @db.Text
+  isRead      Boolean @default(false)
 
-  createdAt   DateTime @default(now())
+  createdAt DateTime @default(now())
 
   @@map("contacts")
 }
 
-/* =========================
-   BLOG
-========================= */
+/**
+ * =========================
+ * BLOG
+ * =========================
+ */
 
 model Blog {
-  id          String    @id @default(uuid()) @db.Uuid()
-  title       String
-  excerpt     String
-  content     String    @db.Text
-  image       String?
-  category    String
-  author      String
-  readTime    Int
+  id       String  @id @default(uuid()) @db.Uuid()
+  title    String
+  excerpt  String
+  content  String  @db.Text
+  image    String?
+  category String
+  author   String
+  readTime Int
 
   featured    Boolean   @default(false)
   published   Boolean   @default(false)
   publishedAt DateTime?
   slug        String    @unique
 
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("blogs")
 }
