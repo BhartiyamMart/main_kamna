@@ -3,7 +3,6 @@ import { prisma } from '@/lib/prisma';
 
 import { randomUUID } from 'crypto';
 import { decryptKey, encryptKey } from '../bcrypt';
-import { error } from 'console';
 import { Logout } from './cookies';
 
 /* ---------------------
@@ -80,6 +79,8 @@ export async function logoutUser(token: string) {
 --------------------- */
 export async function getCurrentUser(token: string) {
   // Find token
+
+
   const tokenRecord = await prisma.token.findFirst({
     where: { token, expiresAt: { gte: new Date() } },
     include: { user: true },

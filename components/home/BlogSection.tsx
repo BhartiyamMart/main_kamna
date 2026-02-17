@@ -88,6 +88,12 @@ export function BlogSection() {
               Stay updated with the latest trends, news, and insights from the Kamna Group of Companies.
             </p>
           </div>
+          <Link
+            href="/blog-kamna"
+            className="rounded-md bg-[#006666] px-4 py-2 text-sm font-medium text-white hover:bg-[#004c4c] md:px-6 md:py-3 md:text-base"
+          >
+            View All Posts
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">

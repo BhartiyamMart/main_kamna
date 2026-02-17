@@ -219,7 +219,7 @@ export function CareerSection() {
                 <p className="mt-2 text-xs text-slate-500 lg:text-sm">Check back soon for new opportunities!</p>
               </div>
             ) : (
-              <div className="no-scrollbar h-[350px] space-y-3 overflow-y-auto pr-2 lg:space-y-4">
+              <div className="no-scrollbar h-[450px] space-y-3 overflow-y-auto pr-2 lg:space-y-4">
                 {/* UPDATED: Use filteredJobs instead of jobs */}
                 {filteredJobs.map((job) => (
                   <JobCard key={job.id} job={job} onSelect={handleJobSelect} />
