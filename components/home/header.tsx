@@ -48,7 +48,7 @@ export default function Header() {
             width={120}
             height={60}
             className={`w-auto object-contain transition-all duration-300
-              ${scrolled ? 'h-6 lg:h-14' : 'h-10 lg:h-[92]'}
+              ${scrolled ? 'h-6 lg:h-14' : 'h-10 lg:h-20'}
             `}
           />
         </Link>
