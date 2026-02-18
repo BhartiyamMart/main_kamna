@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { useEffect, useState, useCallback } from 'react';
 import toast from 'react-hot-toast';
-import { getAllPublishedBlog } from '@/lib/actions/blog-actions';
+import { getAllPublishedBlog, getBlogs } from '@/lib/actions/blog-actions';
 
 interface Blog {
   id: string;
@@ -22,7 +22,7 @@ interface Blog {
   slug: string;
 }
 
-export function BlogSection() {
+export function BlogHomeSection() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -30,7 +30,7 @@ export function BlogSection() {
   const fetchBlogs = useCallback(async () => {
     try {
       setLoading(true);
-      const data = await getAllPublishedBlog(); // ✅ Public function
+      const data = await getAllPublishedBlog(); 
       console.log('Fetched blogs:', data);
       setBlogs(data.slice(0, 3)); // Show only 3 latest blogs
     } catch (error) {
@@ -88,7 +88,12 @@ export function BlogSection() {
               Stay updated with the latest trends, news, and insights from the Kamna Group of Companies.
             </p>
           </div>
-          
+          <Link
+            href="/blog-kamna"
+            className="rounded-md bg-[#006666] px-4 py-2 text-sm font-medium text-white hover:bg-[#004c4c] md:px-6 md:py-3 md:text-base"
+          >
+            View All Posts
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">

@@ -35,9 +35,8 @@ export function ProfessionalInfoStep({
           </label>
           <Input
             id="experience"
-            type="number"
-            min="0"
-            step="1"
+            type="float"
+            
             value={formData.experience}
             onChange={(e) => onInputChange('experience', e.target.value)}
             placeholder="e.g., 3"

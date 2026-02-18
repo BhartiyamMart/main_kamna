@@ -37,7 +37,10 @@ export function PersonalInfoStep({
           <Input
             id="first-name"
             value={formData.firstName}
-            onChange={(e) => onInputChange('firstName', e.target.value)}
+            onChange={(e) => {
+              const lettersOnly = e.target.value.replace(/[^a-zA-Z\s]/g, '');
+              onInputChange('firstName', lettersOnly);
+            }}
             placeholder="First Name"
             className="border-transparent bg-slate-50 focus:bg-white"
           />
@@ -49,7 +52,10 @@ export function PersonalInfoStep({
           <Input
             id="last-name"
             value={formData.lastName}
-            onChange={(e) => onInputChange('lastName', e.target.value)}
+            onChange={(e) => {
+              const lettersOnly = e.target.value.replace(/[^a-zA-Z\s]/g, '');
+              onInputChange('lastName', lettersOnly);
+            }}
             placeholder="Last Name"
             className="border-transparent bg-slate-50 focus:bg-white"
           />
@@ -78,7 +84,12 @@ export function PersonalInfoStep({
             id="mobile"
             type="tel"
             value={formData.phoneNumber}
-            onChange={(e) => onInputChange('phoneNumber', e.target.value)}
+            onChange={(e) => {
+              const digitsOnly = e.target.value.replace(/[^0-9]/g, '');
+              const limited = digitsOnly.slice(0, 10);
+              onInputChange('phoneNumber', limited);
+            }}
+            maxLength={10}
             placeholder="+91 9876543210"
             className="border-transparent bg-slate-50 focus:bg-white"
           />
@@ -104,10 +115,10 @@ export function PersonalInfoStep({
       </div>
 
       <div className="flex gap-3 pt-4">
-        <Button type="button" onClick={onBack} variant="outline" className="flex-1">
+        <Button type="button" onClick={onBack} variant="outline" className="flex-1 cursor-pointer">
           <ArrowLeft className="mr-2 h-4 w-4" /> Back
         </Button>
-        <Button type="button" onClick={onNext} className="flex-1 bg-[#21502c] hover:bg-[#3b864c]">
+        <Button type="button" onClick={onNext} className="flex-1 cursor-pointer bg-[#21502c] hover:bg-[#3b864c]">
           Next Step <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
       </div>

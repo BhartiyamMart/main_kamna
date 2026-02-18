@@ -104,13 +104,31 @@ export async function createBlog(
   }
 }
 
+
+export async function getAllPublishedBlog(){
+  try {
+    const blogs = await prisma.blog.findMany({
+      where: { published: true },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return blogs;
+  } catch (error: any) {
+    throw new Error(error.message || 'Failed to fetch blogs');
+  }
+
+
+}
+
+
+
+
 /* ---------------------------
    GET ALL BLOGS ADMIN
 --------------------------- */
 export async function getBlogs() {
   try {
     const blogs = await prisma.blog.findMany({
-      where: { published: true },
       orderBy: { createdAt: 'desc' },
     });
 

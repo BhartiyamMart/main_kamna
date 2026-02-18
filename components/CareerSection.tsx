@@ -2,8 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { toast } from 'react-hot-toast';
-import { Briefcase, ArrowLeft, ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Briefcase } from 'lucide-react';
 import { submitCareerApplication } from '@/lib/actions/career-actions';
 import { getActiveJobs } from '@/lib/actions/job-actions';
 import { useCareerForm } from '@/hooks/useCareerForm';
@@ -28,13 +27,38 @@ interface Job {
   responsibilities: string[];
 }
 
+const STEP_KEY = 'career_current_step';
+const JOB_KEY = 'career_selected_job';
+const FORM_STORAGE_KEY = 'forma_data'
+
 export function CareerSection() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [selectedJobId, setSelectedJobId] = useState<string>('');
+
+  // hydrate selectedJobId from localStorage
+  const [selectedJobId, setSelectedJobId] = useState<string>(() => {
+    if (typeof window === 'undefined') return '';
+    try {
+      return window.localStorage.getItem(JOB_KEY) || '';
+    } catch {
+      return '';
+    }
+  });
+
   const [jobs, setJobs] = useState<Job[]>([]);
-  const [currentStep, setCurrentStep] = useState(0);
+
+  // hydrate currentStep from localStorage
+  const [currentStep, setCurrentStep] = useState<number>(() => {
+    if (typeof window === 'undefined') return 0;
+    try {
+      const saved = window.localStorage.getItem(STEP_KEY);
+      return saved ? Number(saved) || 0 : 0;
+    } catch {
+      return 0;
+    }
+  });
+
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedDepartment, setSelectedDepartment] = useState<string>('All'); // NEW: Department filter
+  const [selectedDepartment, setSelectedDepartment] = useState<string>('All');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const {
@@ -49,8 +73,36 @@ export function CareerSection() {
   } = useCareerForm();
 
   useEffect(() => {
-    fetchJobs();
-  }, []);
+    if (typeof window === 'undefined') return;
+    try {
+      window.localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(formData));
+    } catch {
+      // ignore
+    }
+  }, [formData]);
+  // persist currentStep when it changes
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      window.localStorage.setItem(STEP_KEY, String(currentStep));
+    } catch {
+      // ignore
+    }
+  }, [currentStep]);
+
+  // persist selectedJobId when it changes
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      if (selectedJobId) {
+        window.localStorage.setItem(JOB_KEY, selectedJobId);
+      } else {
+        window.localStorage.removeItem(JOB_KEY);
+      }
+    } catch {
+      // ignore
+    }
+  }, [selectedJobId]);
 
   const fetchJobs = useCallback(async () => {
     try {
@@ -58,12 +110,13 @@ export function CareerSection() {
       const result = await getActiveJobs();
 
       if (result.status && result.data) {
-        // Since getActiveJobs returns jobs array directly in data
         const jobsList = result.data as Job[];
         setJobs(jobsList);
 
-        if (jobsList.length === 1) {
+        // If no job selected yet and only one job exists, auto-select
+        if (!selectedJobId && jobsList.length === 1) {
           setSelectedJobId(jobsList[0].id);
+          setCurrentStep((prev) => (prev === 0 ? 1 : prev));
         }
       } else {
         console.error('Failed to fetch jobs:', result.message);
@@ -76,7 +129,11 @@ export function CareerSection() {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [selectedJobId]);
+
+  useEffect(() => {
+    fetchJobs();
+  }, [fetchJobs]);
 
   const handleJobSelect = useCallback((jobId: string) => {
     setSelectedJobId(jobId);
@@ -145,6 +202,11 @@ export function CareerSection() {
           if (fileInputRef.current) {
             fileInputRef.current.value = '';
           }
+          // clear persisted step & job
+          if (typeof window !== 'undefined') {
+            window.localStorage.removeItem(STEP_KEY);
+            window.localStorage.removeItem(JOB_KEY);
+          }
         } else {
           toast.error(result.message || 'Failed to submit application. Please try again.');
         }
@@ -158,12 +220,12 @@ export function CareerSection() {
     [formData, resumeFile, currentWorking, selectedJobId, resetForm]
   );
 
-  // NEW: Get unique departments for filter
   const departments = Array.from(new Set(jobs.map((job) => job.department)));
 
-  // NEW: Filter jobs based on selected department
   const filteredJobs =
-    selectedDepartment === 'All' ? jobs : jobs.filter((job) => job.department === selectedDepartment);
+    selectedDepartment === 'All'
+      ? jobs
+      : jobs.filter((job) => job.department === selectedDepartment);
 
   const selectedJob = jobs?.find((job) => job.id === selectedJobId);
 
@@ -171,13 +233,14 @@ export function CareerSection() {
     <section id="careers" className="px-4 py-12 lg:px-20 lg:py-16">
       <div className="container mx-auto">
         <div className="mb-8 text-center lg:mb-12">
-          <h2 className="mb-3 text-3xl font-bold text-slate-900 lg:mb-4 lg:text-4xl">Current Openings</h2>
+          <h2 className="mb-3 text-3xl font-bold text-slate-900 lg:mb-4 lg:text-4xl">
+            Current Openings
+          </h2>
           <p className="mx-auto max-w-2xl text-base text-slate-600 lg:text-lg">
             Explore exciting career opportunities and join our growing team.
           </p>
         </div>
 
-        {/* Loading State */}
         {isLoading && (
           <div className="mx-auto max-w-4xl text-center">
             <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-[#21502c] border-r-transparent"></div>
@@ -185,16 +248,13 @@ export function CareerSection() {
           </div>
         )}
 
-        {/* Job Selection View */}
         {!isLoading && currentStep === 0 && (
           <div className="mx-auto max-w-4xl">
-            {/* UPDATED: Added department filter */}
             <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <h3 className="text-xl font-bold text-slate-900 lg:text-2xl">
                 Open Positions ({filteredJobs?.length || 0})
               </h3>
 
-              {/* NEW: Department Filter */}
               <div className="flex items-center gap-2">
                 <span className="text-sm text-slate-600">Department:</span>
                 <select
@@ -216,11 +276,12 @@ export function CareerSection() {
               <div className="rounded-lg border border-slate-200 bg-white p-6 text-center lg:p-8">
                 <Briefcase className="mx-auto mb-3 h-10 w-10 text-slate-400 lg:mb-4 lg:h-12 lg:w-12" />
                 <p className="text-sm text-slate-600 lg:text-base">No open positions at the moment</p>
-                <p className="mt-2 text-xs text-slate-500 lg:text-sm">Check back soon for new opportunities!</p>
+                <p className="mt-2 text-xs text-slate-500 lg:text-sm">
+                  Check back soon for new opportunities!
+                </p>
               </div>
             ) : (
               <div className="no-scrollbar h-[450px] space-y-3 overflow-y-auto pr-2 lg:space-y-4">
-                {/* UPDATED: Use filteredJobs instead of jobs */}
                 {filteredJobs.map((job) => (
                   <JobCard key={job.id} job={job} onSelect={handleJobSelect} />
                 ))}
@@ -229,7 +290,6 @@ export function CareerSection() {
           </div>
         )}
 
-        {/* Form View */}
         {!isLoading && currentStep > 0 && (
           <div className="mx-auto max-w-2xl">
             <div className="rounded-md border border-slate-100 bg-white p-6 shadow-xl shadow-slate-200/60 lg:p-12">

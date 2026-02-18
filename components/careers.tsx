@@ -9,9 +9,9 @@ export default function CareersPage() {
       <Header />
 
       {/* Hero Banner */}
-      <section className="container mx-auto mt-18 flex h-[60vh] flex-col items-center justify-center bg-[url('/img/career-img.jpg')] bg-cover bg-top px-4 lg:px-22">
+      <section className="container mx-auto  mt-18 flex h-[60vh] flex-col items-center justify-center bg-[url('/img/career-img.jpg')] bg-cover bg-top">
         <img src="/img/career-img.gif" alt="Kamna Group Careers" className="mb-6 h-auto w-40 lg:w-44" />
-        <p className="text-md mb-2 text-[#d9af00]">HOME / Careers</p>
+        
         <h1 className="text-2xl font-bold text-[#d9af00] lg:text-6xl">Careers</h1>
       </section>
 

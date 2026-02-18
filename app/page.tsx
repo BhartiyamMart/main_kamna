@@ -1,5 +1,6 @@
 import AboutHome from '@/components/home/AboutHome';
-import { BlogSection } from '@/components/home/BlogSection';
+import { BlogHomeSection } from '@/components/home/BlogHomeSection';
+
 import { ContactSection } from '@/components/home/ContactSection';
 import Footer from '@/components/home/footer';
 import Header from '@/components/home/header';
@@ -13,12 +14,10 @@ const page = () => {
       <HeroSection />
       <MoreInfo />
       <AboutHome />
-      <BlogSection />
+      <BlogHomeSection />
       <div className="bg-gray-50">
         <ContactSection />
       </div>
-
-      {/* <FeaturesSection /> */}
       <Footer />
     </>
   );

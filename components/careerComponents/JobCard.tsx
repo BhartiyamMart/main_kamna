@@ -62,8 +62,8 @@ export function JobCard({ job, onSelect }: JobCardProps) {
 
   return (
     <div
-      className="group cursor-pointer rounded-lg border-2 border-slate-200 bg-white p-4 transition-all hover:border-[#21502c] hover:shadow-md lg:p-6"
-      onClick={() => onSelect(job.id)}
+      className="group  rounded-lg border-2 border-slate-200 bg-white p-4 transition-all hover:border-[#21502c] hover:shadow-md lg:p-6"
+      
     >
       {/* Header */}
       <div className="flex items-start justify-between gap-3">
@@ -87,7 +87,7 @@ export function JobCard({ job, onSelect }: JobCardProps) {
           <span>{job.experience} years</span>
         </div>
         <div className="col-span-2 flex items-center gap-1.5 lg:gap-2">
-          <DollarSign className="h-3.5 w-3.5 lg:h-4 lg:w-4" />
+          
           <span>{formatSalaryRange(job.salaryStartRange, job.salaryEndRange)}</span>
         </div>
       </div>
@@ -109,7 +109,7 @@ export function JobCard({ job, onSelect }: JobCardProps) {
         >
           <span className="font-medium text-slate-900">Key Responsibilities</span>
           {isResponsibilitiesExpanded ? (
-            <ChevronUp className="h-4 w-4 shrink-0 text-slate-500 transition-transform" />
+            <ChevronUp className="h-4 w-4 shrink-0 cursor-pointer text-slate-500 transition-transform" />
           ) : (
             <ChevronDown className="h-4 w-4 shrink-0 cursor-pointer text-slate-500 transition-transform group-hover:scale-110" />
           )}
@@ -165,7 +165,7 @@ export function JobCard({ job, onSelect }: JobCardProps) {
       </div>
 
       {/* Apply Button */}
-      <Button className="mt-6 w-full cursor-pointer bg-[#21502c] hover:bg-[#3b864c]">
+      <Button onClick={() => onSelect(job.id)} className="mt-6 w-full cursor-pointer bg-[#21502c] hover:bg-[#3b864c]">
         Apply Now <ArrowRight className="ml-2 h-4 w-4" />
       </Button>
     </div>
