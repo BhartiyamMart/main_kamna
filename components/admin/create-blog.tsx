@@ -45,7 +45,7 @@ export default function BlogPage() {
     excerpt: '',
     content: '',
     author: '',
-    readTime: 5,
+    readTime: '15',
     featured: false,
     published: false,
   });
@@ -64,6 +64,7 @@ export default function BlogPage() {
       }
 
       const data = await getBlogs();
+      console.log('Fetched blogs:', data);
       setBlogs(data);
     } catch (error) {
       console.error('Failed to fetch blogs:', error);
@@ -82,9 +83,25 @@ export default function BlogPage() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
 
+    if (name === 'readTime') {
+      // Only allow numbers
+      const regex = /^[0-9]*$/;
+      if (regex.test(value)) {
+        // Enforce max 60 min limit
+        const numValue = parseInt(value, 10);
+        if (!value || (numValue >= 0 && numValue <= 60)) {
+          setFormData({
+            ...formData,
+            [name]: value,
+          });
+        }
+      }
+      return;
+    }
+
     setFormData({
       ...formData,
-      [name]: type === 'checkbox' ? checked : name === 'readTime' ? parseInt(value, 10) || 0 : value,
+      [name]: type === 'checkbox' ? checked : value,
     });
   };
 
@@ -188,7 +205,7 @@ export default function BlogPage() {
     try {
       const blogData = {
         ...formData,
-        readTime: parseInt(formData.readTime.toString(), 10),
+        readTime: parseInt(formData.readTime.toString(), 10) || 0,
         image: uploadedImageUrl || undefined, // ✅ Use new image
       };
 
@@ -223,14 +240,14 @@ export default function BlogPage() {
       excerpt: '',
       content: '',
       author: '',
-      readTime: 5,
+      readTime: '15',
       featured: false,
       published: false,
     });
     setEditId(null);
     setCurrentView('list');
     setUploadedImageUrl(null);
-    setPreviousImageUrl(null); // ✅ Reset previous image
+    setPreviousImageUrl(null);
   };
 
   const handleEdit = (blog: Blog) => {
@@ -240,7 +257,7 @@ export default function BlogPage() {
       excerpt: blog.excerpt,
       content: blog.content,
       author: blog.author,
-      readTime: blog.readTime,
+      readTime: blog.readTime.toString(),
       featured: blog.featured,
       published: blog.published,
     });
@@ -284,7 +301,7 @@ export default function BlogPage() {
   if (currentView === 'list') {
     return (
       <div className="min-h-screen w-full bg-gray-50 pt-15">
-        <div className="sticky top-0 z-10 border-b border-gray-100 bg-white">
+        <div className="sticky top-0 z-10 border-b border-gray-300 bg-gray-50">
           <div className="px-6 py-4 md:px-8">
             <div className="flex items-center justify-between">
               <div>
@@ -299,7 +316,7 @@ export default function BlogPage() {
                 <button
                   onClick={openAddForm}
                   disabled={loading}
-                  className="flex cursor-pointer items-center gap-1 rounded-lg bg-red-500 px-4 py-2 font-medium text-white shadow-sm transition-all duration-200 hover:bg-[#d96419] disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex cursor-pointer items-center gap-1 rounded-lg bg-[#21502c] hover:bg-[#3b864c] px-4 py-2 font-medium text-white shadow-sm transition-all duration-200  disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <Plus size={20} />
                   Add New Blog
@@ -381,9 +398,8 @@ export default function BlogPage() {
                               </span>
                             )}
                             <span
-                              className={`rounded-full px-2 py-1 text-xs font-medium ${
-                                blog.published ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'
-                              }`}
+                              className={`rounded-full px-2 py-1 text-xs font-medium ${blog.published ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'
+                                }`}
                             >
                               {blog.published ? 'Published' : 'Draft'}
                             </span>
@@ -513,7 +529,7 @@ export default function BlogPage() {
               <label className="mb-2 block text-sm font-semibold text-gray-700">Featured Image</label>
 
               {!uploadedImageUrl ? (
-                <div className="rounded-lg border-2 border-dashed border-gray-200 p-8 text-center transition-all duration-200 hover:border-[#F0701E]">
+                <div className="rounded-lg border-2 border-dashed border-gray-200 p-8 text-center transition-all duration-200 hover:border-[#3b864c]">
                   {isUploading ? (
                     <div className="flex flex-col items-center">
                       <Loader2 className="mx-auto mb-4 animate-spin text-[#F0701E]" size={48} />
@@ -524,7 +540,7 @@ export default function BlogPage() {
                     <>
                       <Upload className="mx-auto mb-4 text-gray-400" size={48} />
                       <label htmlFor="file-upload" className="cursor-pointer">
-                        <span className="font-semibold text-gray-900 transition-colors duration-200 hover:text-[#F0701E]">
+                        <span className="font-semibold text-gray-900 transition-colors duration-200 hover:text-[#3b864c]">
                           Click to upload
                         </span>
                         <span className="text-gray-600"> or drag and drop</span>
@@ -575,13 +591,12 @@ export default function BlogPage() {
                   Read Time (minutes) <span className="text-red-500">*</span>
                 </label>
                 <input
-                  type="number"
+                  type="text"
                   name="readTime"
-                  min="1"
                   value={formData.readTime}
                   onChange={handleInputChange}
-                  className="w-full rounded-lg border border-gray-200 px-4 py-3 transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-[#F0701E] focus:outline-none"
-                  placeholder="5"
+                  className="w-full rounded-lg border border-gray-200 px-4 py-3 transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-[#3b864c] focus:outline-none"
+                  placeholder="Enter the estimated read time in minutes "
                   required
                   disabled={loading}
                 />
@@ -623,7 +638,7 @@ export default function BlogPage() {
               <button
                 type="submit"
                 disabled={loading || isUploading}
-                className="flex-1 cursor-pointer rounded-lg bg-[#F0701E] px-6 py-3.5 font-semibold text-white shadow-sm transition-all duration-200 hover:bg-[#d96419] disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex-1 cursor-pointer rounded-lg bg-[#21502c] hover:bg-[#3b864c] px-6 py-3.5 font-semibold text-white shadow-sm transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {loading ? (
                   <span className="flex items-center justify-center gap-2">

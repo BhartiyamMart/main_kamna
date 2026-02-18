@@ -173,10 +173,10 @@ export function EditJobDialog({ job, isOpen, onClose, onSuccess }: EditJobDialog
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="FULL_TIME">Full Time</SelectItem>
-                  <SelectItem value="PART_TIME">Part Time</SelectItem>
-                  <SelectItem value="CONTRACT">Contract</SelectItem>
-                  <SelectItem value="INTERNSHIP">Internship</SelectItem>
+                  <SelectItem value="Full_Time">Full Time</SelectItem>
+                  <SelectItem value="Part_Time">Part Time</SelectItem>
+                  <SelectItem value="Contract">Contract</SelectItem>
+                  <SelectItem value="Internship">Internship</SelectItem>
                 </SelectContent>
               </Select>
             </div>

@@ -5,7 +5,7 @@ import { toast } from 'react-hot-toast';
 import { deleteJob, toggleJobStatus } from '@/lib/actions/job-actions';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Briefcase, Clock, DollarSign, Users, Edit, Trash2, Power, MoreVertical } from 'lucide-react';
+import { MapPin, Briefcase, Clock, IndianRupee, Users, Edit, Trash2, Power, MoreVertical } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -83,37 +83,75 @@ export function JobCard({ job, onUpdate }: JobCardProps) {
 
   return (
     <>
-      <div className="rounded-lg border border-slate-200 bg-white p-6 transition-shadow hover:shadow-md">
+      <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-6 transition-shadow hover:shadow-md">
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <div className="flex items-center gap-3">
-              <h3 className="text-lg font-bold text-slate-900">{job.title}</h3>
-              <Badge variant={job.isActive ? 'default' : 'secondary'}>{job.isActive ? 'Active' : 'Inactive'}</Badge>
+            <div className="flex flex-nowrap items-center gap-2 md:gap-3">
+              <h3 className="truncate text-sm sm:text-md md:text-lg font-bold text-slate-900 flex-1">{job.title}</h3>
+              <Badge variant={job.isActive ? 'default' : 'secondary'} className="shrink-0">{job.isActive ? 'Active' : 'Inactive'}</Badge>
+              <div className="shrink-0">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon" disabled={isLoading}>
+                      <MoreVertical className="h-5 w-5" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={() => setIsEditOpen(true)}>
+                      <Edit className="mr-2 h-4 w-4" />
+                      Edit
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleToggleStatus}>
+                      <Power className="mr-2 h-4 w-4" />
+                      {job.isActive ? 'Deactivate' : 'Activate'}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setIsDeleteOpen(true)} className="text-red-600">
+                      <Trash2 className="mr-2 h-4 w-4" />
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             </div>
             <p className="mt-1 text-sm text-slate-600">{job.department}</p>
 
-            <div className="mt-4 grid grid-cols-2 gap-4 text-sm text-slate-600 md:grid-cols-4">
-              <div className="flex items-center gap-2">
-                <MapPin className="h-4 w-4" />
-                <span>{job.location}</span>
+            <div className="mt-4 grid grid-cols-1 gap-2 text-slate-600 
+                sm:grid-cols-2 
+                lg:grid-cols-4">
+
+              {/* Location */}
+              <div className="flex items-center gap-1">
+                <MapPin className="h-4 w-4 shrink-0" />
+                <span className="text-sm truncate">{job.location}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Briefcase className="h-4 w-4" />
-                <span>{formatJobType(job.jobType)}</span>
+
+              {/* Job Type */}
+              <div className="flex items-center gap-1">
+                <Briefcase className="h-4 w-4 shrink-0" />
+                <span className="text-sm truncate">
+                  {formatJobType(job.jobType)}
+                </span>
               </div>
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4" />
-                <span>{job.experience} years</span>
+
+              {/* Experience */}
+              <div className="flex items-center gap-1">
+                <Clock className="h-4 w-4 shrink-0" />
+                <span className="text-sm truncate">
+                  {job.experience} years
+                </span>
               </div>
-              <div className="flex items-center gap-2">
-                <DollarSign className="h-4 w-4" />
-                <span>
-                  ₹{job.salaryStartRange}-{job.salaryEndRange} LPA
+
+              {/* Salary */}
+              <div className="flex items-center gap-1">
+                <IndianRupee className="h-4 w-4 shrink-0" />
+                <span className="text-sm truncate">
+                  {job.salaryStartRange}-{job.salaryEndRange} LPA
                 </span>
               </div>
             </div>
 
-            <div className="mt-4 flex items-center gap-4 text-sm text-slate-600">
+
+            <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs sm:text-sm text-slate-600">
               <div className="flex items-center gap-2">
                 <Users className="h-4 w-4" />
                 <span>
@@ -121,33 +159,12 @@ export function JobCard({ job, onUpdate }: JobCardProps) {
                 </span>
               </div>
               <div>
-                <span className="font-medium">{job._count.applications}</span> applications
+                <span className="text-xs md:text-sm">{job._count.applications}</span> applications
               </div>
-              <div className="text-xs text-slate-500">Created {new Date(job.createdAt).toLocaleDateString()}</div>
+              <div className="text-xs md:text-sm text-slate-500">Created {new Date(job.createdAt).toLocaleDateString()}</div>
             </div>
           </div>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" disabled={isLoading}>
-                <MoreVertical className="h-5 w-5" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setIsEditOpen(true)}>
-                <Edit className="mr-2 h-4 w-4" />
-                Edit
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleToggleStatus}>
-                <Power className="mr-2 h-4 w-4" />
-                {job.isActive ? 'Deactivate' : 'Activate'}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setIsDeleteOpen(true)} className="text-red-600">
-                <Trash2 className="mr-2 h-4 w-4" />
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
         </div>
       </div>
 

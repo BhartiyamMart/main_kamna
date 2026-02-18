@@ -7,9 +7,10 @@ import { useRef } from 'react';
 interface TextEditorProps {
   value: string;
   onChange: (content: string) => void;
+  height?: number;
 }
 
-export default function TextEditor({ value, onChange }: TextEditorProps) {
+export default function TextEditor({ value, onChange, height = 500 }: TextEditorProps) {
   const editorRef = useRef<TinyMCEEditor | null>(null);
 
   return (
@@ -20,7 +21,7 @@ export default function TextEditor({ value, onChange }: TextEditorProps) {
       }}
       value={value}
       init={{
-        height: 500,
+        height: height,
         menubar: false,
         statusbar: false,
         branding: false,
@@ -49,7 +50,7 @@ export default function TextEditor({ value, onChange }: TextEditorProps) {
           'bullist numlist outdent indent | link image media | ' +
           'table | code | removeformat',
 
-        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px; overflow-x: hidden; word-break: break-word; }',
 
         setup: (editor: any) => {
           editor.on('SkinLoaded', () => {

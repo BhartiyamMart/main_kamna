@@ -30,13 +30,18 @@ export function JobFilters({ onFilterChange }: JobFiltersProps) {
 
   return (
     <div className="rounded-lg border border-slate-200 bg-white p-4">
-      <div className="grid gap-4 md:grid-cols-3">
-        <div className="space-y-2">
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+
+     
+        <div className="space-y-2 w-full">
           <Label>Status</Label>
+
           <Select value={status} onValueChange={handleStatusChange}>
-            <SelectTrigger>
+            <SelectTrigger className="w-full">
               <SelectValue />
             </SelectTrigger>
+
             <SelectContent>
               <SelectItem value="all">All</SelectItem>
               <SelectItem value="active">Active</SelectItem>
@@ -44,23 +49,27 @@ export function JobFilters({ onFilterChange }: JobFiltersProps) {
             </SelectContent>
           </Select>
         </div>
-
-        <div className="space-y-2">
+        <div className="space-y-2 w-full">
           <Label>Job Type</Label>
+
           <Select value={jobType} onValueChange={handleJobTypeChange}>
-            <SelectTrigger>
+            <SelectTrigger className="w-full">
               <SelectValue />
             </SelectTrigger>
+
             <SelectContent>
               <SelectItem value="all">All Types</SelectItem>
               <SelectItem value="FULL_TIME">Full Time</SelectItem>
               <SelectItem value="PART_TIME">Part Time</SelectItem>
               <SelectItem value="CONTRACT">Contract</SelectItem>
               <SelectItem value="INTERNSHIP">Internship</SelectItem>
+              <SelectItem value="FREELANCE">Freelance</SelectItem>
             </SelectContent>
           </Select>
         </div>
+
       </div>
     </div>
+
   );
 }
