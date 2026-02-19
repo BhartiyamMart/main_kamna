@@ -26,7 +26,7 @@ export function BlogHomeSection() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // ✅ No authentication needed - public blogs only
+  // No authentication needed - public blogs only
   const fetchBlogs = useCallback(async () => {
     try {
       setLoading(true);
@@ -128,7 +128,7 @@ export function BlogHomeSection() {
                 </h3>
                 <p className="line-clamp-2 text-slate-600">{post.excerpt}</p>
                 <div className="flex items-center gap-2 pt-2 font-medium text-[#006666]">
-                  Read More <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  Read More <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 cursor-pointer" />
                 </div>
               </div>
             </Link>

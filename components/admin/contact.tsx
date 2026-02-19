@@ -113,7 +113,7 @@ export default function AdminContactsPage() {
   });
 
   return (
-    <div className="container mx-auto px-4 py-20">
+    <div className="container mx-auto px-4 py-20 bg-gray-50 h-full">
       <div className="mb-8">
         <h1 className="text-xl font-bold text-slate-900">Contact Messages</h1>
         <p className="mt-2 text-slate-600">Manage and respond to customer inquiries</p>

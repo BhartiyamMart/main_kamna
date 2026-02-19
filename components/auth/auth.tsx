@@ -81,9 +81,9 @@ export default function AuthPage() {
       <div className="grid h-screen w-full grid-cols-[var(--left-width)_var(--right-width)] overflow-hidden bg-white">
         {/* LEFT: Branding */}
         <div className="hidden flex-col items-center justify-center gap-6 border-r bg-gradient-to-br from-green-50 to-blue-50 px-10 py-12 lg:flex">
-          <Image src="/logo.png" alt="Kammana Logo" width={120} height={120} priority />
+          <Image src="/logo.png" alt="Kamna Logo" width={120} height={120} priority />
           <div className="text-center">
-            <h1 className="mb-2 text-4xl font-bold text-gray-900">Kammana</h1>
+            <h1 className="mb-2 text-4xl font-bold text-gray-900">Kamna</h1>
             <p className="text-lg text-gray-600">Welcome back</p>
           </div>
         </div>

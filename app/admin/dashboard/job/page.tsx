@@ -4,13 +4,13 @@ import { Suspense } from 'react';
 
 export default function AdminJobsPage() {
   return (
-    <div className="container mx-auto px-4 py-18">
-      <div className="mb-8 flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900">Job Management</h1>
-          <p className="mt-2 text-slate-600">Manage job postings and applications</p>
+    <div className="container mx-auto px-4 py-18 h-full bg-gray-50">
+      <div className="mb-8">
+        <div className="flex items-center justify-between">
+          <h1 className="text-md md:text-3xl font-bold text-slate-900">Job Management</h1>
+          <CreateJobButton />
         </div>
-        <CreateJobButton />
+        <p className="text-sm md:text-lg mt-1 text-slate-600">Manage job postings and applications</p>
       </div>
 
       <Suspense fallback={<JobsListSkeleton />}>

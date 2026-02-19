@@ -10,10 +10,15 @@ export function CreateJobButton() {
 
   return (
     <>
-      <Button onClick={() => setIsOpen(true)} className="bg-[#21502c] hover:bg-[#3b864c]">
-        <Plus className="mr-2 h-4 w-4" />
-        Create Job
+      <Button
+        onClick={() => setIsOpen(true)}
+        className="flex cursor-pointer text-xs md:text-sm items-center gap-1 rounded-lg bg-[#21502c] hover:bg-[#3b864c] px-0.5 py-0.5 md:px-2 md:py-2 font-medium text-white shadow-sm transition-all duration-200  disabled:cursor-not-allowed disabled:opacity-50"
+        // className="bg-[#21502c] hover:bg-[#3b864c] flex items-center gap-0.5"
+      >
+        <Plus  size={20}/>
+      Create Job
       </Button>
+
 
       <CreateJobDialog isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </>

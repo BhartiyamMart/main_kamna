@@ -110,8 +110,8 @@ export function AppSidebar() {
 
   return (
     <Sidebar>
-      <header className="flex h-14 items-center border-b">
-        <Image height={55} width={55} src="/Kamna_Mart.webp" alt="logo" />
+      <header className="flex h-14 items-center border-b px-2">
+        <Image height={44} width={44} src="/Kamna_Mart.webp" alt="logo" />
       </header>
       <SidebarContent>
         <SidebarGroup>

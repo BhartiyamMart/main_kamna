@@ -12,6 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Loader2 } from 'lucide-react';
 import { checkAdminAuth } from '@/lib/actions/cookies';
+import TextEditor from '../text-editor';
 
 interface CreateJobDialogProps {
   isOpen: boolean;
@@ -71,9 +72,9 @@ export function CreateJobDialog({ isOpen, onClose }: CreateJobDialogProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-[600px]">
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-[600px] lg:max-w-[900px]">
         <DialogHeader>
-          <DialogTitle>Create New Job</DialogTitle>
+          <DialogTitle className='my-3'>Create New Job</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -128,10 +129,10 @@ export function CreateJobDialog({ isOpen, onClose }: CreateJobDialogProps) {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="FULL_TIME">Full Time</SelectItem>
-                  <SelectItem value="PART_TIME">Part Time</SelectItem>
-                  <SelectItem value="CONTRACT">Contract</SelectItem>
-                  <SelectItem value="INTERNSHIP">Internship</SelectItem>
+                  <SelectItem value="Full_Time">Full Time</SelectItem>
+                  <SelectItem value="Part_Time">Part Time</SelectItem>
+                  <SelectItem value="Contract">Contract</SelectItem>
+                  <SelectItem value="Internship">Internship</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -201,13 +202,10 @@ export function CreateJobDialog({ isOpen, onClose }: CreateJobDialogProps) {
             <Label htmlFor="description">
               Job Description<span className="text-red-500"> *</span>
             </Label>
-            <Textarea
-              id="description"
+            <TextEditor
               value={formData.description}
-              onChange={(e) => handleChange('description', e.target.value)}
-              placeholder="Describe the role and what the candidate will be doing..."
-              className="min-h-[100px]"
-              required
+              onChange={(content) => handleChange('description', content)}
+              height={250}
             />
           </div>
 
@@ -215,13 +213,10 @@ export function CreateJobDialog({ isOpen, onClose }: CreateJobDialogProps) {
             <Label htmlFor="responsibilities">
               Key Responsibilities<span className="text-red-500"> *</span>
             </Label>
-            <Textarea
-              id="responsibilities"
+            <TextEditor
               value={formData.responsibilities}
-              onChange={(e) => handleChange('responsibilities', e.target.value)}
-              placeholder="List the main responsibilities..."
-              className="min-h-[100px]"
-              required
+              onChange={(content) => handleChange('responsibilities', content)}
+              height={250}
             />
           </div>
 
@@ -229,13 +224,10 @@ export function CreateJobDialog({ isOpen, onClose }: CreateJobDialogProps) {
             <Label htmlFor="requirements">
               Requirements<span className="text-red-500"> *</span>
             </Label>
-            <Textarea
-              id="requirements"
+            <TextEditor
               value={formData.requirements}
-              onChange={(e) => handleChange('requirements', e.target.value)}
-              placeholder="List the required skills and qualifications..."
-              className="min-h-[100px]"
-              required
+              onChange={(content) => handleChange('requirements', content)}
+              height={250}
             />
           </div>
 

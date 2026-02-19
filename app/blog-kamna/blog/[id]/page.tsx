@@ -99,7 +99,9 @@ export default function BlogPage({ params }: { params: Promise<{ id: string }> }
     <>
       <Header />
 
-      <section className="container mx-auto mt-18 flex h-[60vh] flex-col items-center justify-center bg-[url('/img/work_img.jpg')] bg-cover bg-center px-4 lg:px-22">
+      <section className="container mx-auto mt-18 flex h-[60vh] flex-col items-center justify-center  bg-cover bg-center px-4 lg:px-22 "
+       style={{ backgroundImage: `url(${blog.image})` }}
+      >
         <img src="/img/career-img.gif" alt="Kamna Cafe Logo" className="mb-6 h-auto w-40 lg:w-44" />
         <p className="text-md mb-2 text-[#d9af00]">HOME / BLOG</p>
         <h1 className="text-xl font-bold text-[#d9af00] lg:text-5xl">{blog.title}</h1>
